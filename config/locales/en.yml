@@ -1,0 +1,9 @@
+en:
+  buy_gift_card: "Buy gift card"
+  gift_card: 'Gift Card'
+  gift_cards: "Gift cards"
+  gift_code: 'Gift Code'
+  gift_code_applied: 'Gift code has been successfully applied to your order.'
+  gift_code_not_found: "The gift code you entered doesn't exist. Please try again."
+  is_gift_card: "is gift card"
+  recipient_name: "Recipient name"

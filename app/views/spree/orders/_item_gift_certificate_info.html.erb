@@ -1,0 +1,4 @@
+<% if item.gift_card %>
+  <br/><b><%= t(:for) %>:</b> <%= item.gift_card.name %> (<%= item.gift_card.email %>)
+  <br/><b><%= t(:note) %>:</b> <%= item.gift_card.note %>
+<% end %>
