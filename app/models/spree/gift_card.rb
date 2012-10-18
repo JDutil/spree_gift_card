@@ -5,31 +5,36 @@ module Spree
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
+    attr_accessible :email, :name, :note, :variant_id
+
     belongs_to :variant
     belongs_to :line_item
 
+    has_many :transactions, class_name: 'Spree::GiftCardTransaction'
+
+    validates :code,               presence: true, uniqueness: true
     validates :current_value,      presence: true
     validates :email, email: true, presence: true
     validates :original_value,     presence: true
     validates :name,               presence: true
-    validates :token,              presence: true, uniqueness: true
 
-    before_validation :generate_token, on: :create
+    before_validation :generate_code, on: :create
+    before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
-    before_validation :set_calculator # Goes after set_values to ensure current_value is set.
-
-    attr_accessible :email, :name, :note, :variant_id
 
     calculated_adjustments
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
       return if order.gift_credit_exists?(self)
-      # order.adjustments.gift_card.reload.clear
       order.update!
       create_adjustment(I18n.t(:gift_card), order, order)
       order.update!
-      # TODO: if successful we should update preferred amount or should that be done elsewhere?  Might make sense to create a new calculator that does the updating
+    end
+
+    # Calculate the amount to be used when creating an adjustment
+    def compute_amount(calculable)
+      self.calculator.compute(calculable, self)
     end
 
     def price
@@ -44,14 +49,14 @@ module Spree
 
     private
 
-    def generate_token
-      until self.token.present? && self.class.where(token: self.token).count == 0
-        self.token = Digest::SHA1.hexdigest([Time.now, rand].join)
+    def generate_code
+      until self.code.present? && self.class.where(code: self.code).count == 0
+        self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
       end
     end
 
     def set_calculator
-      self.calculator = Spree::Calculator::FlatRate.new({preferred_amount: -(self.current_value || 0)})
+      self.calculator = Spree::Calculator::GiftCard.new
     end
 
     def set_values

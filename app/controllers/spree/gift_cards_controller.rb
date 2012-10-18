@@ -10,8 +10,16 @@ module Spree
     def create
       @gift_card = GiftCard.new(params[:gift_card])
       if @gift_card.save
-        @order = current_order(true)
-        line_item = @order.add_variant(@gift_card.variant, 1)
+        # Create line item
+        line_item = LineItem.new(quantity: 1)
+        line_item.gift_card = @gift_card
+        line_item.variant = @gift_card.variant
+        line_item.price = @gift_card.variant.price
+        # Add to order
+        order = current_order(true)
+        order.line_items << line_item
+        order.save
+        # Save gift card
         @gift_card.line_item = line_item
         @gift_card.save
         redirect_to cart_path

@@ -6,7 +6,7 @@ class CreateSpreeGiftCards < ActiveRecord::Migration
       t.string :email, :null => false
       t.string :name
       t.text :note
-      t.string :token, :null => false
+      t.string :code, :null => false
       t.boolean :is_received, :default => false, :null => false
       t.datetime :sent_at
       t.decimal :current_value, :precision => 8, :scale => 2, :null => false

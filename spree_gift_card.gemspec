@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '~> 1.1'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'factory_girl', '~> 3.6'# '~> 4.1' # cant use 4.1 until Spree's factories are compatible probably in 1.2.x
+  s.add_development_dependency 'factory_girl', '~> 3.6'# '~> 4.1' # cant use 4.1 until Spree's factories are compatible maybe in 1.2.x
   s.add_development_dependency 'ffaker'
   s.add_development_dependency 'rspec-rails',  '~> 2.11'
   s.add_development_dependency 'sass-rails'

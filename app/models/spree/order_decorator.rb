@@ -9,32 +9,28 @@ Spree::Order.class_eval do
     !! adjustments.gift_card.reload.detect { |credit| credit.originator_id == gift_card.id }
   end
 
-  # unless self.method_defined?('update_adjustments_with_promotion_limiting')
-  #   def update_adjustments_with_promotion_limiting
-  #     update_adjustments_without_promotion_limiting
-  #     return if adjustments.promotion.eligible.none?
-  #     most_valuable_adjustment = adjustments.promotion.eligible.max{|a,b| a.amount.abs <=> b.amount.abs}
-  #     current_adjustments = (adjustments.promotion.eligible - [most_valuable_adjustment])
-  #     current_adjustments.each do |adjustment|
-  #       adjustment.update_attribute_without_callbacks(:eligible, false)
-  #     end
-  #   end
-  #   alias_method_chain :update_adjustments, :promotion_limiting
-  # end
-
   # Finalizes an in progress order after checkout is complete.
-  # Called after transition to complete state when payments will have been processed
+  # Called after transition to complete state when payments will have been processed.
   def finalize_with_gift_card!
     finalize_without_gift_card!
+    # Send out emails for any newly purchased gift cards.
     self.line_items.each do |li|
       Spree::OrderMailer.gift_card_email(li.gift_card, self).deliver if li.gift_card
+    end
+    # Record any gift card redemptions.
+    self.adjustments.where(originator_type: 'Spree::GiftCard').each do |adjustment|
+      gift_card_transaction = adjustment.originator.transactions.build
+      gift_card_transaction.amount = adjustment.amount
+      gift_card_transaction.order  = self
+      gift_card_transaction.save
     end
   end
   alias_method_chain :finalize!, :gift_card
 
+  # If variant is a gift card we say order doesn't already contain it so that each gift card is it's own line item.
   def contains?(variant)
     return false if variant.product.is_gift_card?
-    line_items.detect{ |line_item| line_item.variant_id == variant.id }
+    line_items.detect { |line_item| line_item.variant_id == variant.id }
   end
 
 end

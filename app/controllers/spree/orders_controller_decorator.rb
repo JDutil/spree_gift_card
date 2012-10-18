@@ -1,5 +1,6 @@
 Spree::OrdersController.class_eval do
 
+  # TODO Apply gift code in a before filter if possible to avoid overriding the update method for easier upgrades?
   def update
     @order = current_order
     if @order.update_attributes(params[:order])
@@ -30,13 +31,13 @@ Spree::OrdersController.class_eval do
   private
 
     def apply_gift_code
-      return if @order.gift_code.blank?
-      if gift = Spree::GiftCard.find_by_token(@order.gift_code)
-        if gift.order_activatable?(@order)
-          fire_event('spree.checkout.gift_code_added', :gift_code => @order.gift_code)
-          gift.apply(@order)
-          true
-        end
+      return false if @order.gift_code.blank?
+      if gift_card = Spree::GiftCard.find_by_code(@order.gift_code) and gift_card.order_activatable?(@order)
+        fire_event('spree.checkout.gift_code_added', :gift_code => @order.gift_code)
+        gift_card.apply(@order)
+        return true
+      else
+        return false
       end
     end
 

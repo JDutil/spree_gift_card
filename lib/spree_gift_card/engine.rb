@@ -15,8 +15,6 @@ module SpreeGiftCard
       Dir.glob(File.join(File.dirname(__FILE__), '../../app/**/*_decorator*.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
-      Spree::User.has_many :gift_cards
-      Spree::LineItem.has_one :gift_card
     end
 
     config.to_prepare &method(:activate).to_proc

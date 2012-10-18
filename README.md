@@ -1,4 +1,4 @@
-SpreeGiftCard
+SpreeGiftCard [![Build Status](https://secure.travis-ci.org/jdutil/spree_gift_card.png)](http://travis-ci.org/jdutil/spree_gift_card) [![Dependency Status](https://gemnasium.com/jdutil/spree_gift_card.png?travis)](https://gemnasium.com/jdutil/spree_gift_card)
 =============
 
 This extension adds gift card functionality to spree.  It is based off the original [spree_gift_cards](http://github.com/spree/spree_gift_cards)
@@ -17,5 +17,10 @@ Testing
 
 1. bundle exec rake test_app
 1. bundle exec rspec spec
+
+Todo
+====
+
+1. Have new gift card page mimic styling of product page
 
 Copyright (c) 2012 Jeff Dutil, released under the New BSD License
