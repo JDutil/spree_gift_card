@@ -19,10 +19,7 @@ Spree::Order.class_eval do
     end
     # Record any gift card redemptions.
     self.adjustments.where(originator_type: 'Spree::GiftCard').each do |adjustment|
-      gift_card_transaction = adjustment.originator.transactions.build
-      gift_card_transaction.amount = adjustment.amount
-      gift_card_transaction.order  = self
-      gift_card_transaction.save
+      adjustment.originator.debit(adjustment.amount, self)
     end
   end
   alias_method_chain :finalize!, :gift_card

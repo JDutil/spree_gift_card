@@ -54,9 +54,28 @@ describe Spree::GiftCard do
         gift_card.apply(order)
         # default line item is priced at 10
         order.adjustments.find_by_originator_id_and_originator_type(gift_card.id, gift_card.class.to_s).amount.to_f.should eql(-10.0)
-      
-        pending 'test should also have tax & shipping...'
       end
+    end
+  end
+
+  context '#debit' do
+    let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
+    let(:order) { create(:order) }
+
+    it 'should raise an error when attempting to debit an amount higher than the current value' do
+      lambda {
+        gift_card.debit(-30, order)
+      }.should raise_error
+    end
+
+    it 'should subtract used amount from the current value and create a transaction' do
+      gift_card.debit(-25, order)
+      gift_card.reload # reload to ensure accuracy
+      gift_card.current_value.to_f.should eql(0.0)
+      transaction = gift_card.transactions.first
+      transaction.amount.to_f.should eql(-25.0)
+      transaction.gift_card.should eql(gift_card)
+      transaction.order.should eql(order)
     end
   end
 

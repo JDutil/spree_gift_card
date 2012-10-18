@@ -11,17 +11,16 @@ describe Spree::Order do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
 
     context 'when redeeming gift card' do
-      it 'creates transactions' do
+      it 'debits gift cards current value' do
+        gift_card.current_value.should eql(25.0)
         order = create(:order_with_totals)
         order.line_items = [create(:line_item, order: order, price: 75, variant: create(:variant, price: 75))]
         order.reload # reload so line item is associated
         order.update!
         gift_card.apply(order)
+        gift_card.reload.current_value.to_f.should eql(25.0)
         order.finalize!
-        transaction = gift_card.transactions.first
-        transaction.amount.to_f.should eql(-25.0)
-        transaction.gift_card.should eql(gift_card)
-        transaction.order.should eql(order)
+        gift_card.reload.current_value.to_f.should eql(0.0)
       end
     end
 

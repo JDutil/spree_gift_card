@@ -15,8 +15,8 @@ module Spree
     validates :code,               presence: true, uniqueness: true
     validates :current_value,      presence: true
     validates :email, email: true, presence: true
-    validates :original_value,     presence: true
     validates :name,               presence: true
+    validates :original_value,     presence: true
 
     before_validation :generate_code, on: :create
     before_validation :set_calculator, on: :create
@@ -37,13 +37,22 @@ module Spree
       self.calculator.compute(calculable, self)
     end
 
+    def debit(amount, order)
+      raise 'Cannot debit gift card by amount greater than current value.' if (self.current_value - amount.to_f.abs) < 0
+      transaction = self.transactions.build
+      transaction.amount = amount
+      transaction.order  = order
+      self.current_value = self.current_value - amount.abs
+      self.save
+    end
+
     def price
       self.line_item ? self.line_item.price * self.line_item.quantity : self.variant.price
     end
 
     def order_activatable?(order)
       order &&
-      created_at.to_i < order.created_at.to_i &&
+      created_at < order.created_at &&
       !UNACTIVATABLE_ORDER_STATES.include?(order.state)
     end
 
