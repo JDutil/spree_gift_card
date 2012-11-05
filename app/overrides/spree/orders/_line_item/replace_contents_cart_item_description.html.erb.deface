@@ -1,3 +1,7 @@
+<!-- insert_bottom "[data-hook='cart_item_description']"
+     enabled
+     original '95a090c709b76195844a3e0019062916e7595109' -->
+
 <% if line_item.gift_card %>
   <br/><b><%= t(:for) %>:</b> <%= line_item.gift_card.name %> (<%= line_item.gift_card.email %>)
   <br/><b><%= t(:note) %>:</b> <%= line_item.gift_card.note %>

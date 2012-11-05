@@ -1,0 +1,6 @@
+<h1><%= t(:new_gift_card) %></h1>
+
+<%= form_for :gift_card, :url => collection_url do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+  <%= render :partial => 'spree/admin/shared/new_resource_links' %>
+<% end %>

@@ -1,3 +1,6 @@
+<!-- insert_bottom "[data-hook='admin_product_form_right']"
+     enabled -->
+
 <p>
   <%= f.check_box(:is_gift_card) %> <%= f.label :is_gift_card, t("is_gift_card")%>
 </p>

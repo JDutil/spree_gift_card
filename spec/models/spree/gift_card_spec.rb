@@ -32,6 +32,10 @@ describe Spree::GiftCard do
     ])
   end
 
+  context '#activatable?' do
+    pending
+  end
+
   context '#apply' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
 
