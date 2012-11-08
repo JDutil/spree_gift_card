@@ -1,0 +1,10 @@
+<fieldset id="general_fields">
+  <legend><%= t(:general) %></legend>
+  <%= f.text_field :email %>
+  <%= f.text_field :name %>
+  <%= f.text_field :note %>
+  <%= f.field_container :variant_id do %>
+    <%= f.label :variant_id, t(:value) %>
+    <%= f.select :variant_id, @gift_card_variants.map { |v| [number_to_currency(v.price), v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?) %>
+  <% end %>
+</fieldset>
