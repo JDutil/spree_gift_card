@@ -15,7 +15,9 @@
       <th><%= t(:code) %></th>
       <th><%= t(:original_value) %></th>
       <th><%= t(:current_value) %></th>
-      <th><%= t(:description) %></th>
+      <th><%= t(:email) %></th>
+      <th><%= t(:name) %></th>
+      <th><%= t(:note) %></th>
       <th style="width:150px;"><%= t(:action) %></th>
     </tr>
   </thead>
@@ -25,7 +27,9 @@
         <td><%= card.code %></td>
         <td><%= number_to_currency card.original_value %></td>
         <td><%= number_to_currency card.current_value %></td>
-        <td><%=  %></td>
+        <td><%= card.email %></td>
+        <td><%= card.name %></td>
+        <td><%= card.note %></td>
         <td>
           <%= link_to_edit card %> &nbsp;
           <%= link_to_delete card %>
