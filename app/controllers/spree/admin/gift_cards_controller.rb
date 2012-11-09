@@ -16,9 +16,6 @@ module Spree
         find_gift_card_variants
       end
 
-      def index
-      end
-
       def new
         find_gift_card_variants
       end

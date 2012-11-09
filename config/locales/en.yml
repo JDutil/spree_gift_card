@@ -9,3 +9,4 @@ en:
   new_gift_card: 'New Gift Card'
   recipient_name: "Recipient name"
   successfully_created_gift_card: 'You have successfully created the gift card.'
+  transactions: "Transactions"

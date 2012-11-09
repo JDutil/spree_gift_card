@@ -30,5 +30,6 @@ Todo
 
 1. Have new gift card page mimic styling of product page
 1. Improve test coverage further
+1. Should have infinite gift card product stock.  Don't know of any current spree implementation for this (patch core?).
 
 Copyright (c) 2012 Jeff Dutil, released under the New BSD License
