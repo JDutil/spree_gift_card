@@ -6,7 +6,7 @@ if Spree::Product.gift_cards.count == 0
   [25, 50, 75, 100].each do |value|
     option_value = Spree::OptionValue.new(name: value, presentation: "$#{value}")
     option_value.option_type = option_type
-    variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}", count_on_hand: 1000)
+    variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}", on_hand: 1000)
     variant.option_values << option_value
     product.variants << variant
   end
