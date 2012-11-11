@@ -31,5 +31,7 @@ Todo
 1. Have new gift card page mimic styling of product page
 1. Improve test coverage further
 1. Should have infinite gift card product stock.  Don't know of any current spree implementation for this (patch core?).
+1. Should have the option of using a select box instead of radio buttons, and it should allow a default message as the first select option, such as "Select Amount"
+
 
 Copyright (c) 2012 Jeff Dutil, released under the New BSD License
