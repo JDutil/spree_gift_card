@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Spree::Order do
 
-  it '#contains? should return false if variant is gift card' do
-    pending
+  let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25, product: create(:product, is_gift_card: true))) }
+
+  it '#find_line_item_by_variant should return false if variant is gift card' do
+    subject.find_line_item_by_variant(gift_card.variant).should eql(false)
   end
 
   context '#finalize!' do
-
-    let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
 
     context 'when redeeming gift card' do
       it 'debits gift cards current value' do

@@ -4,7 +4,7 @@ module Spree
 
       def create
         if @gift_card.save
-          flash.notice = I18n.t(:successfully_created_gift_card)
+          flash[:success] = I18n.t(:successfully_created_gift_card)
           redirect_to admin_gift_cards_path
         else
           find_gift_card_variants
@@ -23,7 +23,7 @@ module Spree
       private
 
       def find_gift_card_variants
-        gift_card_product_ids = Product.not_deleted.where(["is_gift_card = ?", true]).map(&:id)
+        gift_card_product_ids = Product.not_deleted.where(is_gift_card: true).pluck(:id)
         @gift_card_variants = Variant.where(["price > 0 AND product_id IN (?)", gift_card_product_ids]).order("price")
       end
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Checkout" do
+describe "Checkout", js: true do
 
   before do
     create(:gift_card, code: "foobar", variant: create(:variant, price: 25))
@@ -12,38 +12,45 @@ describe "Checkout" do
     create(:product, name: "RoR Mug", price: 30)
   end
 
-  # Wait for Spree 1.2.x when promos & adjustments are also handled on the cart page.
-  # context "on the cart page" do
-  #   before do
-  #     visit spree.root_path
-  #     click_link "RoR Mug"
-  #     click_button "add-to-cart-button"
-  #   end
-  # 
-  #   it "can enter a valid gift code" do
-  #     fill_in "Gift Code", :with => "onetwo"
-  #     click_button "Update"
-  #     page.should have_content("Gift code has been successfully applied to your order.")
-  #   end
-  # 
-  #   it "cannot enter a gift code that was created after the order" do
-  #     gift_card.update_column(:created_at, 1.day.from_now)
-  #     fill_in "Gift Code", :with => "onetwo"
-  #     click_button "Update"
-  #     page.should have_content("The gift code you entered doesn't exist. Please try again.")
-  #   end
-  # end
-
-  context "visitor makes checkout as guest without registration" do
-
-    it "informs about an invalid gift code", :js => true do
+  context "on the cart page" do
+    before do
       visit spree.root_path
       click_link "RoR Mug"
       click_button "add-to-cart-button"
-      click_link "Checkout"
+    end
+
+    it "can enter a valid gift code" do
+      fill_in "order[gift_code]", :with => "foobar"
+      click_button "Update"
+      wait_until do
+        page.should have_content("Gift code has been successfully applied to your order.")
+        within '#cart_adjustments' do
+          page.should have_content("Gift Card")
+          page.should have_content("$-25.00")
+        end
+      end
+    end
+
+    it "cannot enter a gift code that was created after the order" do
+      Spree::GiftCard.first.update_attribute(:created_at, 1.day.from_now)
+      fill_in "order[gift_code]", :with => "foobar"
+      click_button "Update"
+      wait_until do
+        page.should have_content("The gift code you entered doesn't exist. Please try again.")
+      end
+    end
+  end
+
+  context "visitor makes checkout as guest without registration" do
+
+    it "informs about an invalid gift code" do
+      visit spree.root_path
+      click_link "RoR Mug"
+      click_button "add-to-cart-button"
 
       # TODO not sure why registration page is ignored so just update order here.
       Spree::Order.last.update_column(:email, "spree@example.com")
+      click_button "Checkout"
       # fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
@@ -67,14 +74,14 @@ describe "Checkout" do
       page.should have_content("The gift code you entered doesn't exist. Please try again.")
     end
 
-    it "displays valid gift code's adjustment", :js => true do
+    it "displays valid gift code's adjustment" do
       visit spree.root_path
       click_link "RoR Mug"
       click_button "add-to-cart-button"
-      click_link "Checkout"
 
       # TODO not sure why registration page is ignored so just update order here.
       Spree::Order.last.update_column(:email, "spree@example.com")
+      click_button "Checkout"
       # fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
@@ -95,9 +102,11 @@ describe "Checkout" do
 
       fill_in "Gift code", :with => "foobar"
       click_button "Save and Continue"
-      within "[data-hook='order_details_adjustments']" do
-        page.should have_content("Gift Card")
-        page.should have_content("-$25.00")
+      wait_until do
+        within "[data-hook='order_details_adjustments']" do
+          page.should have_content("Gift Card")
+          page.should have_content("$-25.00")
+        end
       end
     end
 

@@ -2,7 +2,7 @@ module Spree
   class Calculator::GiftCard < Calculator
 
     def self.description
-      'Gift Card Calculator'
+      I18n.t(:gift_card_calculator)
     end
 
     def compute(order, gift_card)

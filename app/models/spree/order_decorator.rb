@@ -4,7 +4,7 @@ Spree::Order.class_eval do
   attr_accessor :gift_code
 
   # If variant is a gift card we say order doesn't already contain it so that each gift card is it's own line item.
-  def contains?(variant)
+  def find_line_item_by_variant(variant)
     return false if variant.product.is_gift_card?
     line_items.detect { |line_item| line_item.variant_id == variant.id }
   end
@@ -27,7 +27,7 @@ Spree::Order.class_eval do
   # Tells us if there is the specified gift code already associated with the order
   # regardless of whether or not its currently eligible.
   def gift_credit_exists?(gift_card)
-    !! adjustments.gift_card.reload.detect { |credit| credit.originator_id == gift_card.id }
+    adjustments.gift_card.reload.detect{ |credit| credit.originator_id == gift_card.id }.present?
   end
 
 end
