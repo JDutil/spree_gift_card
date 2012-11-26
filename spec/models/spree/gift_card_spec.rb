@@ -39,6 +39,15 @@ describe Spree::GiftCard do
   context '#apply' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
 
+    it 'creates adjustment with mandatory set to true' do
+      order = create(:order_with_totals)
+      create(:line_item, order: order, price: 75, variant: create(:variant, price: 75))
+      order.reload # reload so line item is associated
+      order.update!
+      gift_card.apply(order)
+      order.adjustments.find_by_originator_id_and_originator_type(gift_card.id, gift_card.class.to_s).mandatory.should be_true
+    end
+
     context 'for order total larger than gift card amount' do
       it 'creates adjustment for full amount' do
         order = create(:order_with_totals)
