@@ -4,7 +4,7 @@
   <p>
     <%= f.label :variant_id, t(:value) %>
     <span class="required">*</span><br/>
-    <%= f.select :variant_id, @gift_card_variants.map { |variant| [money(variant.price), variant.id] } %>
+    <%= f.select :variant_id, @gift_card_variants.map { |variant| [variant.display_price, variant.id] } %>
   </p>
   <p>
     <%= f.label :email, t("email") %>
