@@ -18,6 +18,6 @@
   <%= f.field_container :variant_id do %>
     <%= f.label :variant_id, t(:value) %>
     <span class="required">*</span><br/>
-    <%= f.select :variant_id, @gift_card_variants.map { |v| [number_to_currency(v.price), v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?) %>
+    <%= f.select :variant_id, @gift_card_variants.map { |v| [v.display_price, v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?) %>
   <% end %>
 </fieldset>
