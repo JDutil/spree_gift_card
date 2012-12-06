@@ -5,7 +5,7 @@ Spree::CheckoutController.class_eval do
     if @order.update_attributes(object_params)
 
       fire_event('spree.checkout.update')
-      render :edit and return unless apply_coupon_code
+      render :edit and return unless apply_coupon_code if defined?(Spree::Promo)
       render :edit and return unless apply_gift_code
 
       if @order.next
