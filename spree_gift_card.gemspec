@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Spree Gift Card'
   s.description = 'Spree Gift Card Extension'
 
-  s.author      = ['Jeff Dutil']
+  s.authors     = ['Jeff Dutil']
   s.email       = ['jdutil@burlingtonwebapps.com']
   s.homepage    = 'http://github.com/jdutil/spree_gift_card'
 
