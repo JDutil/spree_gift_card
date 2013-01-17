@@ -57,6 +57,7 @@ feature "Admin Gift Card Administration", js: true do
       page.driver.browser.switch_to.alert.accept
     end
     wait_until do
+      sleep 1
       Spree::GiftCard.count.should eql(0)
     end
   end
