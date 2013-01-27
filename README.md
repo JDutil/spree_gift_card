@@ -19,6 +19,11 @@ Installation
 1. Run `rails g spree_gift_card:install`
 1. Run `rails g spree_gift_card:seed`
 
+Seed Gift Card Product
+======================
+
+    $ rails g spree_gift_card:seed
+
 Testing
 =======
 
