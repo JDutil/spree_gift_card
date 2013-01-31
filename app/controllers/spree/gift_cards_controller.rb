@@ -1,6 +1,5 @@
 module Spree
   class GiftCardsController < Spree::StoreController
-    helper 'spree/admin/base'
 
     def new
       find_gift_card_variants
