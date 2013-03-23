@@ -1,13 +1,12 @@
-<div class='toolbar'>
-  <ul class='actions'>
-    <li>
-      <%= button_link_to t(:new_gift_card), spree.new_admin_gift_card_path, :icon => 'add' %>
-    </li>
-  </ul>
-  <br class="clear" />
-</div>
+<% content_for :page_title do %>
+  <%= t(:gift_cards) %>
+<% end %>
 
-<h1><%= t(:gift_cards) %></h1>
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to t(:new_gift_card), new_object_url, :icon => 'icon-plus' %>
+  </li>
+<% end %>
 
 <table class="index">
   <thead>
@@ -18,7 +17,7 @@
       <th><%= t(:email) %></th>
       <th><%= t(:name) %></th>
       <th><%= t(:note) %></th>
-      <th style="width:150px;"><%= t(:action) %></th>
+      <th class="actions"></th>
     </tr>
   </thead>
   <tbody>
@@ -30,7 +29,7 @@
         <td><%= card.email %></td>
         <td><%= card.name %></td>
         <td><%= card.note %></td>
-        <td>
+        <td class="actions">
           <%= link_to_edit card %> &nbsp;
           <%= link_to_delete card %>
         </td>
