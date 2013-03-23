@@ -9,6 +9,7 @@ describe "Checkout", js: true do
     zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
     create(:shipping_method, zone: zone)
     create(:payment_method)
+    create(:mail_method)
     create(:product, name: "RoR Mug", price: 30)
   end
 
@@ -22,12 +23,10 @@ describe "Checkout", js: true do
     it "can enter a valid gift code" do
       fill_in "order[gift_code]", :with => "foobar"
       click_button "Update"
-      wait_until do
-        page.should have_content("Gift code has been successfully applied to your order.")
-        within '#cart_adjustments' do
-          page.should have_content("Gift Card")
-          page.should have_content("$-25.00")
-        end
+      page.should have_content("Gift code has been successfully applied to your order.")
+      within '#cart_adjustments' do
+        page.should have_content("Gift Card")
+        page.should have_content("$-25.00")
       end
     end
 
@@ -35,9 +34,7 @@ describe "Checkout", js: true do
       Spree::GiftCard.first.update_attribute(:created_at, 1.day.from_now)
       fill_in "order[gift_code]", :with => "foobar"
       click_button "Update"
-      wait_until do
-        page.should have_content("The gift code you entered doesn't exist. Please try again.")
-      end
+      page.should have_content("The gift code you entered doesn't exist. Please try again.")
     end
   end
 
@@ -54,14 +51,16 @@ describe "Checkout", js: true do
       # fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
-      fill_in "First Name", :with => "John"
-      fill_in "Last Name", :with => "Smith"
-      fill_in "Street Address", :with => "1 John Street"
-      fill_in "City", :with => "City of John"
-      fill_in "Zip", :with => "01337"
-      select "United States", :from => "Country"
-      select "Alaska", :from => "order[bill_address_attributes][state_id]"
-      fill_in "Phone", :with => "555-555-5555"
+      within '#billing' do
+        fill_in "First Name", :with => "John"
+        fill_in "Last Name", :with => "Smith"
+        fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
+        fill_in "City", :with => "City of John"
+        fill_in "Zip", :with => "01337"
+        select "United States", :from => "Country"
+        select "Alaska", :from => "order[bill_address_attributes][state_id]"
+        fill_in "Phone", :with => "555-555-5555"
+      end
       check "Use Billing Address"
 
       # To shipping method screen
@@ -85,14 +84,16 @@ describe "Checkout", js: true do
       # fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
-      fill_in "First Name", :with => "John"
-      fill_in "Last Name", :with => "Smith"
-      fill_in "Street Address", :with => "1 John Street"
-      fill_in "City", :with => "City of John"
-      fill_in "Zip", :with => "01337"
-      select "United States", :from => "Country"
-      select "Alaska", :from => "order[bill_address_attributes][state_id]"
-      fill_in "Phone", :with => "555-555-5555"
+      within '#billing' do
+        fill_in "First Name", :with => "John"
+        fill_in "Last Name", :with => "Smith"
+        fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
+        fill_in "City", :with => "City of John"
+        fill_in "Zip", :with => "01337"
+        select "United States", :from => "Country"
+        select "Alaska", :from => "order[bill_address_attributes][state_id]"
+        fill_in "Phone", :with => "555-555-5555"
+      end
       check "Use Billing Address"
 
       # To shipping method screen
@@ -102,11 +103,10 @@ describe "Checkout", js: true do
 
       fill_in "Gift code", :with => "foobar"
       click_button "Save and Continue"
-      wait_until do
-        within "[data-hook='order_details_adjustments']" do
-          page.should have_content("Gift Card")
-          page.should have_content("$-25.00")
-        end
+
+      within '#summary-order-charges' do
+        page.should have_content("Gift Card")
+        page.should have_content("$-25.00")
       end
     end
 

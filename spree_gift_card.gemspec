@@ -18,14 +18,14 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'spree_core', '~> 2.0.0.beta'
 
-  s.add_development_dependency 'capybara', '~> 1.1'
+  s.add_development_dependency 'capybara', '~> 2.0'
   s.add_development_dependency 'coffee-rails'
   s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'factory_girl', '~> 3.6'# '~> 4.1' # cant use 4.1 until Spree's factories are compatible maybe in 1.3.x
+  s.add_development_dependency 'factory_girl', '~> 4.2'
   s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'rspec-rails',  '~> 2.11'
+  s.add_development_dependency 'rspec-rails',  '~> 2.13'
   s.add_development_dependency 'sass-rails'
-  s.add_development_dependency 'shoulda-matchers'
+  s.add_development_dependency 'shoulda-matchers', '>= 1.5.4'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
 end

@@ -26,13 +26,14 @@ require 'shoulda-matchers'
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
 # Requires factories defined in spree_core
-require 'spree/core/testing_support/factories'
-require 'spree/core/testing_support/authorization_helpers'
-require 'spree/core/url_helpers'
+require 'spree/testing_support/factories'
+require 'spree/testing_support/authorization_helpers'
+require 'spree/testing_support/url_helpers'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
-  config.include Spree::Core::UrlHelpers
+  config.include Spree::TestingSupport::UrlHelpers
+  config.extend Spree::TestingSupport::AuthorizationHelpers::Request, :type => :feature # once spree updates this can be removed
   config.color = true
 
   # Set to false for running JS drivers.

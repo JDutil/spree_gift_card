@@ -56,10 +56,8 @@ feature "Admin Gift Card Administration", js: true do
       click_link 'Delete'
       page.driver.browser.switch_to.alert.accept
     end
-    wait_until do
-      sleep 1
-      Spree::GiftCard.count.should eql(0)
-    end
+    sleep 1
+    Spree::GiftCard.count.should eql(0)
   end
 
   scenario 'updating gift card' do
@@ -69,7 +67,6 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'spree@example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select '$50.00', from: 'gift_card[variant_id]'
     click_button 'Update'
     page.should have_content("Gift card \"First Last\" has been successfully updated!")
     within 'table.index' do

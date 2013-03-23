@@ -21,6 +21,7 @@ feature "Purchase Gift Card", js: true do
     zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
     create(:shipping_method, zone: zone)
     create(:payment_method)
+    create :mail_method
     ##
     Spree::GiftCard.count.should eql(0)
     ActionMailer::Base.deliveries = []
@@ -55,14 +56,16 @@ feature "Purchase Gift Card", js: true do
     # fill_in "order_email", :with => "spree@example.com"
     # click_button "Continue"
 
-    fill_in "First Name", :with => "John"
-    fill_in "Last Name", :with => "Smith"
-    fill_in "Street Address", :with => "1 John Street"
-    fill_in "City", :with => "City of John"
-    fill_in "Zip", :with => "01337"
-    select "United States", :from => "Country"
-    select "Alaska", :from => "order[bill_address_attributes][state_id]"
-    fill_in "Phone", :with => "555-555-5555"
+    within '#billing' do
+      fill_in "First Name", :with => "John"
+      fill_in "Last Name", :with => "Smith"
+      fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
+      fill_in "City", :with => "City of John"
+      fill_in "Zip", :with => "01337"
+      select "United States", :from => "Country"
+      select "Alaska", :from => "order[bill_address_attributes][state_id]"
+      fill_in "Phone", :with => "555-555-5555"
+    end
     check "Use Billing Address"
 
     # To shipping method screen
@@ -70,6 +73,7 @@ feature "Purchase Gift Card", js: true do
     # To payment screen
     click_button "Save and Continue"
 
+    choose "Check"
     ActionMailer::Base.deliveries.size.should == 0
     click_button "Save and Continue"
     ActionMailer::Base.deliveries[1].subject.should eql('Spree Demo Site Gift Card')
