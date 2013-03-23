@@ -1,23 +1,33 @@
-<fieldset id="general_fields">
-  <legend><%= t(:general) %></legend>
-  <%= f.field_container :email do %>
-    <%= f.label :email %>
-    <span class="required">*</span><br/>
-    <%= f.text_field :email %>
-  <% end %>
-  <%= f.field_container :name do %>
-    <%= f.label :name %>
-    <span class="required">*</span><br/>
-    <%= f.text_field :name %>
-  <% end %>
-  <%= f.field_container :note do %>
-    <%= f.label :note %>
-    <br/>
-    <%= f.text_field :note %>
-  <% end %>
-  <%= f.field_container :variant_id do %>
-    <%= f.label :variant_id, t(:value) %>
-    <span class="required">*</span><br/>
-    <%= f.select :variant_id, @gift_card_variants.map { |v| [number_to_currency(v.price), v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?) %>
-  <% end %>
-</fieldset>
+<div data-hook="admin_gift_card_form_fields" class="row clearfix">
+  <div class="alpha five columns">
+    <%= f.field_container :email do %>
+      <%= f.label :email %> <span class="required">*</span><br/>
+      <%= f.text_field :email, :class => "fullwidth" %>
+      <%= f.error_message_on :email %>
+    <% end %>
+  </div>
+  <div class="omega five columns">
+    <%= f.field_container :name do %>
+      <%= f.label :name %> <span class="required">*</span><br/>
+      <%= f.text_field :name, :class => "fullwidth" %>
+      <%= f.error_message_on :name %>
+    <% end %>
+  </div>
+
+  <div class="clear"></div>
+
+  <div class="alpha five columns">
+    <%= f.field_container :note do %>
+      <%= f.label :note %>
+      <%= f.text_field :note, :class => "fullwidth" %>
+      <%= f.error_message_on :note %>
+    <% end %>
+  </div>
+
+  <div class="omega five columns">
+    <%= f.field_container :variant_id do %>
+      <%= f.label :variant_id, t(:value) %> <span class="required">*</span><br/>
+      <%= f.select :variant_id, @gift_card_variants.map { |v| [number_to_currency(v.price), v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?), :class => 'select2' %>
+    <% end %>
+  </div>
+</div>
