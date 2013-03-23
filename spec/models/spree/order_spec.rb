@@ -31,7 +31,7 @@ describe Spree::Order do
         order.reload # reload so line item is associated
         order.update!
         Spree::OrderMailer.stub_chain(:gift_card_email, :deliver).and_return(true)
-        Spree::OrderMailer.should_receive(:gift_card_email).with(gift_card, order).once
+        Spree::OrderMailer.should_receive(:gift_card_email).with(gift_card.id, order).once
         order.finalize!
       end
     end
