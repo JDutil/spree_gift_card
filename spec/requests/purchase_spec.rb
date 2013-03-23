@@ -21,6 +21,7 @@ feature "Purchase Gift Card", js: true do
     zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
     create(:shipping_method, zone: zone)
     create(:payment_method)
+    create(:mail_method)
     ##
     Spree::GiftCard.count.should eql(0)
     ActionMailer::Base.deliveries = []
