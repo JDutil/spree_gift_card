@@ -14,6 +14,9 @@ module Spree
       end
 
       private
+      def collection
+        Spree::GiftCard.order("created_at desc").page(params[:page]).per(Spree::Config[:orders_per_page])
+      end
 
       def find_gift_card_variants
         gift_card_product_ids = Product.not_deleted.where(is_gift_card: true).pluck(:id)
