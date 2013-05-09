@@ -1,10 +1,10 @@
 <% content_for :page_title do %>
-  <%= t(:editing_gift_card) %>
+  <%= Spree.t(:editing_gift_card) %>
 <% end %>
 
 <% content_for :page_actions do %>
   <li>
-    <%= button_link_to t(:back_to_gift_cards_list), spree.admin_gift_cards_path, :icon => 'icon-arrow-left' %>
+    <%= button_link_to Spree.t(:back_to_gift_cards_list), spree.admin_gift_cards_path, :icon => 'icon-arrow-left' %>
   </li>
 <% end %>
 
@@ -17,7 +17,7 @@
   </fieldset>
 <% end %>
 
-<h2><%= t(:transactions) %><h2>
+<h2><%= Spree.t(:transactions) %><h2>
 <ul>
   <% @gift_card.transactions.each do |transaction| %>
   <li><%= link_to "#{transaction.order.number}:" , admin_order_path(transaction.order) %> <%= number_to_currency transaction.amount %></li>

@@ -2,5 +2,5 @@
      enabled -->
 
 <p>
-  <%= f.check_box(:is_gift_card) %> <%= f.label :is_gift_card, t("is_gift_card")%>
+  <%= f.check_box(:is_gift_card) %> <%= f.label :is_gift_card, Spree.t("is_gift_card")%>
 </p>
