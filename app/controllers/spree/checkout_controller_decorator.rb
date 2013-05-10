@@ -12,13 +12,13 @@ Spree::CheckoutController.class_eval do
       return if after_update_attributes
 
       unless @order.next
-        flash[:error] = t(:payment_processing_failed)
+        flash[:error] = Spree.t(:payment_processing_failed)
         redirect_to checkout_state_path(@order.state) and return
       end
 
       if @order.completed?
         session[:order_id] = nil
-        flash.notice = t(:order_processed_successfully)
+        flash.notice = Spree.t(:order_processed_successfully)
         flash[:commerce_tracking] = "nothing special"
         redirect_to completion_route
       else
