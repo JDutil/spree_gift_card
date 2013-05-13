@@ -36,6 +36,18 @@ describe Spree::Order do
       end
     end
 
+    context "with other credits" do
+      it "does not let the order total fall below zero" do
+        order = create(:order_with_totals)
+        order.line_items = [create(:line_item, order: order, price: 40, variant: create(:variant, price: 40))]
+        order.adjustments.create(:label => I18n.t(:store_credit) , :amount => -25)
+        order.reload
+        order.update!
+        gift_card.apply(order)
+        order.total.to_f.should eql(0.0)
+      end
+    end
+
   end
 
 end
