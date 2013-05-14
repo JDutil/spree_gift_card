@@ -7,7 +7,6 @@ if Spree::Product.gift_cards.count == 0
     option_value = Spree::OptionValue.new(name: value, presentation: "$#{value}")
     option_value.option_type = option_type
     opts = { price: value.to_i, sku: "GIFTCERT#{value}" }
-    opts.merge!({ on_hand: 1000 }) if Spree::Config[:track_inventory_levels]
     variant = Spree::Variant.new(opts)
     variant.option_values << option_value
     product.variants << variant

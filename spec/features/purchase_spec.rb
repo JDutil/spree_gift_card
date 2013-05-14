@@ -10,7 +10,7 @@ feature "Purchase Gift Card", js: true do
     [25, 50, 75, 100].each do |value|
       option_value = Spree::OptionValue.new(name: value, presentation: "$#{value}")
       option_value.option_type = option_type
-      variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}", on_hand: 1000)
+      variant = Spree::Variant.new(price: value.to_i, sku: "GIFTCERT#{value}")
       variant.option_values << option_value
       product.variants << variant
     end
@@ -21,7 +21,6 @@ feature "Purchase Gift Card", js: true do
     zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
     create(:shipping_method, zone: zone)
     create(:payment_method)
-    create :mail_method
     ##
     Spree::GiftCard.count.should eql(0)
     ActionMailer::Base.deliveries = []

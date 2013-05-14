@@ -5,7 +5,7 @@ module Spree
     class GiftCard < Calculator
 
       def self.description
-        I18n.t(:gift_card_calculator)
+        Spree.t(:gift_card_calculator)
       end
 
       def compute(order, gift_card)
