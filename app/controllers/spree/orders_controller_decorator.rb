@@ -22,7 +22,11 @@ Spree::OrdersController.class_eval do
       end
       @order.line_items = @order.line_items.select { |li| li.quantity > 0 }
       fire_event('spree.order.contents_changed')
-      respond_with(@order) { |format| format.html { redirect_to cart_path } }
+      if params[:checkout]
+        respond_with(@order) { |format| format.html { redirect_to checkout_path } }
+      else
+        respond_with(@order) { |format| format.html { redirect_to cart_path } }
+      end
     else
       respond_with(@order)
     end

@@ -40,7 +40,7 @@ describe "Checkout" do
       visit spree.root_path
       click_link "RoR Mug"
       click_button "add-to-cart-button"
-      click_link "Checkout"
+      click_button "Checkout"
 
       # TODO not sure why registration page is ignored so just update order here.
       Spree::Order.last.update_column(:email, "spree@example.com")
@@ -71,7 +71,7 @@ describe "Checkout" do
       visit spree.root_path
       click_link "RoR Mug"
       click_button "add-to-cart-button"
-      click_link "Checkout"
+      click_button "Checkout"
 
       # TODO not sure why registration page is ignored so just update order here.
       Spree::Order.last.update_column(:email, "spree@example.com")
