@@ -43,8 +43,8 @@ describe "Checkout" do
       click_button "Checkout"
 
       # TODO not sure why registration page is ignored so just update order here.
-      Spree::Order.last.update_column(:email, "spree@example.com")
-      # fill_in "order_email", :with => "spree@example.com"
+      # Spree::Order.last.update_column(:email, "spree@example.com")
+      fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
       fill_in "First Name", :with => "John"
@@ -61,7 +61,7 @@ describe "Checkout" do
       click_button "Save and Continue"
       # To payment screen
       click_button "Save and Continue"
-
+      sleep 5
       fill_in "Gift code", :with => "coupon_codes_rule_man"
       click_button "Save and Continue"
       page.should have_content("The gift code you entered doesn't exist. Please try again.")
@@ -74,8 +74,8 @@ describe "Checkout" do
       click_button "Checkout"
 
       # TODO not sure why registration page is ignored so just update order here.
-      Spree::Order.last.update_column(:email, "spree@example.com")
-      # fill_in "order_email", :with => "spree@example.com"
+      # Spree::Order.last.update_column(:email, "spree@example.com")
+      fill_in "order_email", :with => "spree@example.com"
       # click_button "Continue"
 
       fill_in "First Name", :with => "John"
@@ -97,7 +97,7 @@ describe "Checkout" do
       click_button "Save and Continue"
       within "[data-hook='order_details_adjustments']" do
         page.should have_content("Gift Card")
-        page.should have_content("-$25.00")
+        page.should have_content("$-25.00")
       end
     end
 
