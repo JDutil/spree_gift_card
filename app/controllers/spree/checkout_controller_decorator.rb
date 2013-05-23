@@ -6,8 +6,7 @@ Spree::CheckoutController.class_eval do
     if @order.update_attributes(object_params)
       fire_event('spree.checkout.update')
       if @order.gift_code.present?
-        apply_gift_code
-        render :edit and return
+        render :edit and return unless apply_gift_code
       end
       return if after_update_attributes
 
