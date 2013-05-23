@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.2'
   s.requirements << 'none'
 
-  s.add_dependency 'spree_core', '~> 2.0.0.beta'
+  s.add_dependency 'spree_core', '~> 2.0.0'
 
   s.add_development_dependency 'capybara', '~> 2.0'
   s.add_development_dependency 'coffee-rails'
