@@ -12,3 +12,4 @@ en:
   successfully_created_gift_card: 'You have successfully created the gift card.'
   transactions: "Transactions"
   value: 'Value'
+  apply: 'Apply'
