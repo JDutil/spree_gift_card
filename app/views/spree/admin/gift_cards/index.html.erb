@@ -1,24 +1,24 @@
 <div class='toolbar'>
   <ul class='actions'>
     <li>
-      <%= button_link_to t(:new_gift_card), spree.new_admin_gift_card_path, :icon => 'add' %>
+      <%= button_link_to Spree.t(:new_gift_card), spree.new_admin_gift_card_path, :icon => 'add' %>
     </li>
   </ul>
   <br class="clear" />
 </div>
 
-<h1><%= t(:gift_cards) %></h1>
+<h1><%= Spree.t(:gift_cards) %></h1>
 
 <table class="index">
   <thead>
     <tr>
-      <th><%= t(:code) %></th>
-      <th><%= t(:original_value) %></th>
-      <th><%= t(:current_value) %></th>
-      <th><%= t(:email) %></th>
-      <th><%= t(:name) %></th>
-      <th><%= t(:note) %></th>
-      <th style="width:150px;"><%= t(:action) %></th>
+      <th><%= Spree.t(:code) %></th>
+      <th><%= Spree.t(:original_value) %></th>
+      <th><%= Spree.t(:current_value) %></th>
+      <th><%= Spree.t(:email) %></th>
+      <th><%= Spree.t(:name) %></th>
+      <th><%= Spree.t(:note) %></th>
+      <th style="width:150px;"><%= Spree.t(:action) %></th>
     </tr>
   </thead>
   <tbody>
