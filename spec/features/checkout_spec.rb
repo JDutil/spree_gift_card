@@ -2,14 +2,16 @@ require 'spec_helper'
 
 describe "Checkout", js: true do
 
+  let!(:country) { create(:country, :name => "United States of America",:states_required => true) }
+  let!(:state) { create(:state, :name => "Alabama", :country => country) }
+  let!(:shipping_method) { create(:shipping_method) }
+  let!(:stock_location) { create(:stock_location) }
+  let!(:mug) { create(:product, :name => "RoR Mug") }
+  let!(:payment_method) { create(:payment_method) }
+  let!(:zone) { create(:zone) }
+
   before do
     create(:gift_card, code: "foobar", variant: create(:variant, price: 25))
-    country = create(:country, name: "United States")
-    create(:state, name: "Alaska", country: country)
-    zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
-    create(:shipping_method, zone: zone)
-    create(:payment_method)
-    create(:product, name: "RoR Mug", price: 30)
   end
 
   context "on the cart page" do
@@ -25,7 +27,7 @@ describe "Checkout", js: true do
       page.should have_content("Gift code has been successfully applied to your order.")
       within '#cart_adjustments' do
         page.should have_content("Gift Card")
-        page.should have_content("$-25.00")
+        page.should have_content("$-19.99")
       end
     end
 
@@ -56,7 +58,8 @@ describe "Checkout", js: true do
         fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
         fill_in "City", :with => "City of John"
         fill_in "Zip", :with => "01337"
-        select "United States", :from => "Country"
+        sleep 5
+        select "United States of America", :from => "Country"
         select "Alaska", :from => "order[bill_address_attributes][state_id]"
         fill_in "Phone", :with => "555-555-5555"
       end
@@ -89,7 +92,7 @@ describe "Checkout", js: true do
         fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
         fill_in "City", :with => "City of John"
         fill_in "Zip", :with => "01337"
-        select "United States", :from => "Country"
+        select "United States of America", :from => "Country"
         select "Alaska", :from => "order[bill_address_attributes][state_id]"
         fill_in "Phone", :with => "555-555-5555"
       end
@@ -105,7 +108,7 @@ describe "Checkout", js: true do
 
       within '#summary-order-charges' do
         page.should have_content("Gift Card")
-        page.should have_content("$-25.00")
+        page.should have_content("$-19.99")
       end
     end
 

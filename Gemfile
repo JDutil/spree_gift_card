@@ -1,4 +1,3 @@
-source 'http://rubygems.org'
-# TODO waiting for 1.3.x to be released
-gem 'spree', github: 'spree/spree'
+source 'https://rubygems.org'
+
 gemspec
