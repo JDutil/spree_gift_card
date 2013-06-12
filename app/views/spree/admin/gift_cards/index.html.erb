@@ -9,6 +9,18 @@
 
 <h1><%= t(:gift_cards) %></h1>
 
+<% if @batch_id %>
+<h2>Batch Information</h2>
+<ul>
+  <li><b>Batch ID:</b> <%= @batch_id %></li>
+  <li><b>Quantity:</b> <%= @batch_quantity %></li>
+  <li><b>Value:</b> <%= number_to_currency @batch_amount %></li>
+  <li><b>Export:</b> <%= link_to "Excel (CSV)", admin_gift_card_path(@gift_cards.first, :action => "show", :format => "csv", :batch_id => @batch_id) %></li>
+</ul>
+<% end %>
+
+<%= paginate @gift_cards %>
+
 <table class="index">
   <thead>
     <tr>
@@ -38,3 +50,5 @@
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @gift_cards %>

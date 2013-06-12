@@ -1,0 +1,4 @@
+"Code","Value","Email","Name"
+<% @gift_cards.each do |card| %>
+"<%= card.code %>","<%= number_to_currency card.current_value %>","<%= card.email %>","<%= card.name %>"
+<% end %>

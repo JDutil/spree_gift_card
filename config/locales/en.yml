@@ -10,3 +10,7 @@ en:
   recipient_name: "Recipient name"
   successfully_created_gift_card: 'You have successfully created the gift card.'
   transactions: "Transactions"
+  multiple_gift_cards: "How many Gift Cards?"
+  multiple_gift_card_instructions: "Generate multiple gift cards with the same details (name, email, note, and value)."
+  multiple_successfully_created_gift_cards: 'You have successfully created %{quantity} gift card(s).'
+  quantity: "Quantity"
