@@ -3,13 +3,18 @@ module Spree
     class GiftCardsController < Spree::Admin::ResourceController
 
       def index
-        @batch_id = params[:batch_id]
+        @batch_id = (params[:batch_id] || 0).to_i
         @batches = GiftCard.group(:batch_id).where("batch_id > 0")
 
-        if @batch_id
+        if @batch_id > 0
           gift_cards = GiftCard.where(:batch_id => @batch_id)
-          @batch_quantity = gift_cards.count
-          @batch_amount = gift_cards.first.original_value
+          if gift_cards.length > 0
+            @batch_quantity = gift_cards.count
+            @batch_amount = gift_cards.first.original_value
+          else
+            flash.notice = t(:no_batch_found, {:id => @batch_id})
+            redirect_to admin_gift_cards_path
+          end
         else
           gift_cards = GiftCard
         end
@@ -54,6 +59,19 @@ module Spree
 
       def new
         find_gift_card_variants
+      end
+
+      # PUT
+      def delete_my_batch_unused
+        gift_card = GiftCard.find(params[:id])
+        batch_id = gift_card.batch_id
+
+        if batch_id && batch_id > 0
+          GiftCard.where(:batch_id => batch_id).where("original_value = current_value").destroy_all
+        end
+
+        flash.notice = t(:batch_deleted, :id => batch_id)
+        redirect_to admin_gift_cards_path
       end
 
       private

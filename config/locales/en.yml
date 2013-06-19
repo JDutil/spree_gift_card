@@ -14,5 +14,9 @@ en:
   multiple_gift_card_instructions: "Generate multiple gift cards with the same details (name, email, note, and value)."
   multiple_successfully_created_gift_cards: 'You have successfully created %{quantity} gift card(s).'
   quantity: "Quantity"
-  jump_to_batch: "Jump to Gift Card batch:"
+  goto_batch: "View Gift Card batch:"
   batch_details: "Batch Details"
+  delete_batch: "Delete batch"
+  are_you_sure_delete_batch: "Are you sure you want to delete this batch?"
+  batch_deleted: 'The batch of Gift Cards has been deleted (ID: %{id})'
+  no_batch_found: 'Sorry, there are no gift cards with batch ID %{id}'

@@ -3,6 +3,12 @@
     <li>
       <%= button_link_to t(:new_gift_card), spree.new_admin_gift_card_path, :icon => 'add' %>
     </li>
+<% if @batch_id > 0 %>
+    <li class="delete_batch">
+      <%= button_link_to t(:delete_batch), { :action => "delete_my_batch_unused", :id => @gift_cards.first.id },
+        { :confirm => t(:are_you_sure_delete_batch), :method => "put", :icon => "delete" }  %>
+    </li>
+<% end %>
   </ul>
   <br class="clear" />
 </div>
@@ -12,12 +18,12 @@
 <% if @batches && @batches.length > 0 %>
 <div class="spree_gift_cards_select_menu">
 <%= select("spree_gift_cards", "batch_id", @batches.map { |i|
-  [i.batch_id.to_s + " - " + i.name + ": " + number_to_currency(i.original_value), admin_gift_cards_path(:batch_id => i.batch_id)]
-}.unshift([t(:jump_to_batch), ""]), {}, :onchange => "if(this.value){location=this.value}") %>
+  [i.name + ": " + number_to_currency(i.original_value) + ", ID: " + i.batch_id.to_s, admin_gift_cards_path(:batch_id => i.batch_id)]
+}.unshift([t(:goto_batch), ""]), {}, :onchange => "if(this.value){location=this.value}") %>
 </div>
 <% end %>
 
-<% if @batch_id %>
+<% if @batch_id > 0 %>
   <h2><%= t(:batch_details)%></h2>
 <ul>
   <li><b>Batch ID:</b> <%= @batch_id %></li>

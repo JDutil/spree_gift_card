@@ -6,6 +6,19 @@
   float: right;
 }
 
+.spree_gift_cards_select_menu select {
+  font-size : 1.2em;
+}
+
 .pagination {
   clear: both;
+}
+
+.delete_batch form {
+  margin: 0;
+}
+
+.delete_batch button {
+  margin: 0;
+  font-size: 12px;
 }
