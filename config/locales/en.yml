@@ -14,3 +14,5 @@ en:
   multiple_gift_card_instructions: "Generate multiple gift cards with the same details (name, email, note, and value)."
   multiple_successfully_created_gift_cards: 'You have successfully created %{quantity} gift card(s).'
   quantity: "Quantity"
+  jump_to_batch: "Jump to Gift Card batch:"
+  batch_details: "Batch Details"

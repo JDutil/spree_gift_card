@@ -1,3 +1,11 @@
 /*
  *= require admin/spree_core
 */
+
+.spree_gift_cards_select_menu {
+  float: right;
+}
+
+.pagination {
+  clear: both;
+}

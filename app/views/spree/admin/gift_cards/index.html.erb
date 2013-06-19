@@ -9,8 +9,16 @@
 
 <h1><%= t(:gift_cards) %></h1>
 
+<% if @batches && @batches.length > 0 %>
+<div class="spree_gift_cards_select_menu">
+<%= select("spree_gift_cards", "batch_id", @batches.map { |i|
+  [i.batch_id.to_s + " - " + i.name + ": " + number_to_currency(i.original_value), admin_gift_cards_path(:batch_id => i.batch_id)]
+}.unshift([t(:jump_to_batch), ""]), {}, :onchange => "if(this.value){location=this.value}") %>
+</div>
+<% end %>
+
 <% if @batch_id %>
-<h2>Batch Information</h2>
+  <h2><%= t(:batch_details)%></h2>
 <ul>
   <li><b>Batch ID:</b> <%= @batch_id %></li>
   <li><b>Quantity:</b> <%= @batch_quantity %></li>

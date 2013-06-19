@@ -4,6 +4,7 @@ module Spree
 
       def index
         @batch_id = params[:batch_id]
+        @batches = GiftCard.group(:batch_id).where("batch_id > 0")
 
         if @batch_id
           gift_cards = GiftCard.where(:batch_id => @batch_id)
