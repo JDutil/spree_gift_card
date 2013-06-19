@@ -2,5 +2,13 @@
 
 <%= form_for :gift_card, :url => collection_url do |f| %>
   <%= render :partial => 'form', :locals => { :f => f } %>
+  <fieldset id="generate_fields">
+    <legend><%= t(:multiple_gift_cards) %></legend>
+    <p><%= t(:multiple_gift_card_instructions) %></p>
+    <%= field_container :generate, :quantity do %>
+      <%= label :generate, t(:quantity) %>
+      <%= number_field :generate, :quantity, :value => 1, :size => 5, :min => 1, :max => 1000 %>
+    <% end %>
+  </fieldset>
   <%= render :partial => 'spree/admin/shared/new_resource_links' %>
 <% end %>

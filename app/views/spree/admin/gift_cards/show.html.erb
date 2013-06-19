@@ -1,0 +1,45 @@
+<div class='toolbar'>
+  <ul class='actions'>
+    <li>
+      <%= button_link_to t(:new_gift_card), spree.new_admin_gift_card_path, :icon => 'add' %>
+    </li>
+  </ul>
+  <br class="clear" />
+</div>
+
+<h1><%= t(:gift_card) %></h1>
+
+<% if @gift_card.batch_id %>
+<ul>
+  <li>This <%= t(:gift_card) %> is part of a batch.
+  <%= link_to "View all the gift cards in this batch", admin_gift_cards_path(:batch_id => @gift_card.batch_id) %>.
+</ul>
+<% end %>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th><%= t(:code) %></th>
+      <th><%= t(:original_value) %></th>
+      <th><%= t(:current_value) %></th>
+      <th><%= t(:email) %></th>
+      <th><%= t(:name) %></th>
+      <th><%= t(:note) %></th>
+      <th style="width:150px;"><%= t(:action) %></th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr id="<%= spree_dom_id @gift_card %>">
+        <td><%= @gift_card.code %></td>
+        <td><%= number_to_currency @gift_card.original_value %></td>
+        <td><%= number_to_currency @gift_card.current_value %></td>
+        <td><%= @gift_card.email %></td>
+        <td><%= @gift_card.name %></td>
+        <td><%= @gift_card.note %></td>
+        <td>
+          <%= link_to_edit @gift_card %> &nbsp;
+          <%= link_to_delete @gift_card %>
+        </td>
+      </tr>
+  </tbody>
+</table>

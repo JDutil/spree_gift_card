@@ -5,20 +5,22 @@ module Spree
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
-    attr_accessible :email, :name, :note, :variant_id
+    attr_accessor   :skip_unique_code
+    attr_accessible :email, :name, :note, :variant_id, :batch_id, :skip_unique_code
 
     belongs_to :variant
     belongs_to :line_item
 
     has_many :transactions, class_name: 'Spree::GiftCardTransaction'
 
-    validates :code,               presence: true, uniqueness: true
+    validates :code,               presence: true
+    validates :code,               uniqueness: true, unless: "skip_unique_code == true"
     validates :current_value,      presence: true
     validates :email, email: true, presence: true
     validates :name,               presence: true
     validates :original_value,     presence: true
 
-    before_validation :generate_code, on: :create
+    before_validation :generate_code, on: :create, if: "code.nil?"
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
@@ -57,11 +59,15 @@ module Spree
       !UNACTIVATABLE_ORDER_STATES.include?(order.state)
     end
 
+    def self.generate_raw_code
+      Digest::SHA1.hexdigest([Time.now, rand].join)
+    end
+
     private
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
-        self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
+        self.code = Spree::GiftCard::generate_raw_code
       end
     end
 
