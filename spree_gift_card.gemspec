@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.test_files  = `git ls-files -- {test,spec,features}/*`.split("\n")
 
   s.require_path = 'lib'
-  s.required_ruby_version = '>= 1.9.2'
+  s.required_ruby_version = '>= 1.9.3'
   s.requirements << 'none'
 
   s.add_dependency 'spree_api',      '~> 2.0.0'
