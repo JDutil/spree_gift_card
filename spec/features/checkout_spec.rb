@@ -58,9 +58,8 @@ describe "Checkout", js: true do
         fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
         fill_in "City", :with => "City of John"
         fill_in "Zip", :with => "01337"
-        sleep 5
         select "United States of America", :from => "Country"
-        select "Alaska", :from => "order[bill_address_attributes][state_id]"
+        select "Alabama", :from => "order[bill_address_attributes][state_id]"
         fill_in "Phone", :with => "555-555-5555"
       end
       check "Use Billing Address"
@@ -93,7 +92,7 @@ describe "Checkout", js: true do
         fill_in "City", :with => "City of John"
         fill_in "Zip", :with => "01337"
         select "United States of America", :from => "Country"
-        select "Alaska", :from => "order[bill_address_attributes][state_id]"
+        select "Alabama", :from => "order[bill_address_attributes][state_id]"
         fill_in "Phone", :with => "555-555-5555"
       end
       check "Use Billing Address"
@@ -106,7 +105,7 @@ describe "Checkout", js: true do
       fill_in "Gift code", :with => "foobar"
       click_button "Save and Continue"
 
-      within '#summary-order-charges' do
+      within '#order-charges' do
         page.should have_content("Gift Card")
         page.should have_content("$-19.99")
       end

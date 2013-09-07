@@ -1,7 +1,6 @@
 Spree::OrdersController.class_eval do
 
-  # TODO Apply gift code in a before filter if possible to avoid overriding the update method for easier upgrades?
-  def update
+  durably_decorate :update, mode: 'soft', sha: '91961146778f771e81540197e030dcf4cc1d99df' do
     @order = current_order
     if @order.update_attributes(params[:order])
       render :edit and return unless apply_coupon_code if defined?(Spree::Promo)

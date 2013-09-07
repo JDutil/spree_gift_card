@@ -2,9 +2,17 @@ require 'spec_helper'
 
 feature "Purchase Gift Card", js: true do
 
+  let!(:country) { create(:country, :name => "United States of America",:states_required => true) }
+  let!(:state) { create(:state, :name => "Alabama", :country => country) }
+  let!(:shipping_method) { create(:shipping_method) }
+  let!(:stock_location) { create(:stock_location) }
+  let!(:mug) { create(:product, :name => "RoR Mug") }
+  let!(:payment_method) { create(:payment_method) }
+  let!(:zone) { create(:zone) }
+
   before do
     ## TODO seed helper for gc
-    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0)
+    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0, shipping_category_id: shipping_method.shipping_categories.first.id)
     option_type = Spree::OptionType.new(name: "is-gift-card", presentation: "Value")
     product.option_types << option_type
     [25, 50, 75, 100].each do |value|
@@ -15,13 +23,7 @@ feature "Purchase Gift Card", js: true do
       product.variants << variant
     end
     product.save
-    ## TODO seed helper for checkout requirements
-    country = create(:country, name: "United States")
-    create(:state, name: "Alaska", country: country)
-    zone = create(:zone, zone_members: [Spree::ZoneMember.create(zoneable: country)])
-    create(:shipping_method, zone: zone)
-    create(:payment_method)
-    ##
+
     Spree::GiftCard.count.should eql(0)
     ActionMailer::Base.deliveries = []
     visit spree.root_path
@@ -44,6 +46,7 @@ feature "Purchase Gift Card", js: true do
     fill_in 'gift_card[note]', with: 'Test message.'
     select '$50.00', from: 'gift_card[variant_id]'
     click_button 'Add To Cart'
+
     within '#line_items' do
       page.should have_content('Gift Card')
       Spree::GiftCard.count.should eql(1)
@@ -61,8 +64,8 @@ feature "Purchase Gift Card", js: true do
       fill_in "order_bill_address_attributes_address1", :with => "1 John Street"
       fill_in "City", :with => "City of John"
       fill_in "Zip", :with => "01337"
-      select "United States", :from => "Country"
-      select "Alaska", :from => "order[bill_address_attributes][state_id]"
+      select "United States of America", :from => "Country"
+      select "Alabama", :from => "order[bill_address_attributes][state_id]"
       fill_in "Phone", :with => "555-555-5555"
     end
     check "Use Billing Address"
@@ -71,12 +74,9 @@ feature "Purchase Gift Card", js: true do
     click_button "Save and Continue"
     # To payment screen
     click_button "Save and Continue"
-
     choose "Check"
-    ActionMailer::Base.deliveries.size.should == 0
     click_button "Save and Continue"
-    ActionMailer::Base.deliveries[1].subject.should eql('Spree Demo Site Gift Card')
-    ActionMailer::Base.deliveries.size.should == 2 # Order Confirmation & Gift Card Delivery
+    page.should have_content(Spree::Order.last.number)
   end
 
   scenario 'removing line item from cart should destroy gift card' do

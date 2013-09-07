@@ -1,14 +1,12 @@
 Spree::CheckoutController.class_eval do
 
-  # TODO Apply gift code in a before filter if possible to avoid overriding the update method for easier upgrades?
-  # Updates the order and advances to the next state (when possible.)
-  def update
+  durably_decorate :update, mode: 'soft', sha: '681470fc5d42ee53a76d275755a0bc10a86fc5c1' do
     if @order.update_attributes(object_params)
       fire_event('spree.checkout.update')
+
       if @order.gift_code.present?
         render :edit and return unless apply_gift_code
       end
-      return if after_update_attributes
 
       unless @order.next
         flash[:error] = Spree.t(:payment_processing_failed)
