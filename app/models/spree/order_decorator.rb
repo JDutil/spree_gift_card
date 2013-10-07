@@ -1,6 +1,5 @@
 Spree::Order.class_eval do
 
-  attr_accessible :gift_code
   attr_accessor :gift_code
 
   # If variant is a gift card we say order doesn't already contain it so that each gift card is it's own line item.
