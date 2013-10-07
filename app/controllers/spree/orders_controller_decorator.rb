@@ -2,7 +2,7 @@ Spree::OrdersController.class_eval do
 
   durably_decorate :update, mode: 'soft', sha: 'f2e5c56e5b4b0eccb62af6571c1c150da3cf334e' do
     @order = current_order
-    if @order.update_attributes(params[:order])
+    if @order.update_attributes(order_params)
       render :edit and return unless apply_coupon_code if defined?(Spree::Promo)
       render :edit and return unless apply_gift_code
 
