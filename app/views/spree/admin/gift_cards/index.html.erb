@@ -8,6 +8,10 @@
   </li>
 <% end %>
 
+<% content_for :table_filter_title do %>
+  <h2>Testing</h2>
+<% end %>
+
 <table class="index">
   <thead>
     <tr>
@@ -17,7 +21,7 @@
       <th><%= Spree.t(:email) %></th>
       <th><%= Spree.t(:name) %></th>
       <th><%= Spree.t(:note) %></th>
-      <th style="width:150px;"><%= Spree.t(:action) %></th>
+      <th class="actions" width="100"></th>
     </tr>
   </thead>
   <tbody>
@@ -30,8 +34,9 @@
         <td><%= card.name %></td>
         <td><%= card.note %></td>
         <td class="actions">
-          <%= link_to_edit card %> &nbsp;
-          <%= link_to_delete card %>
+          <%= link_to_edit card, :no_text => true if can?(:edit, card) %>
+          &nbsp;
+          <%= link_to_delete card, :no_text => true if can?(:delete, card) %>
         </td>
       </tr>
     <% end %>

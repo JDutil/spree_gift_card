@@ -1,25 +1,10 @@
 Spree::OrdersController.class_eval do
 
-  durably_decorate :update, mode: 'soft', sha: '91961146778f771e81540197e030dcf4cc1d99df' do
-    @order = current_order
-    if @order.update_attributes(params[:order])
-      render :edit and return unless apply_coupon_code if defined?(Spree::Promo)
-      render :edit and return unless apply_gift_code
+  Spree::PermittedAttributes.checkout_attributes << :gift_code
 
-      @order.line_items = @order.line_items.select {|li| li.quantity > 0 }
-      fire_event('spree.order.contents_changed')
-      respond_with(@order) do |format|
-        format.html do
-          if params.has_key?(:checkout)
-            redirect_to checkout_state_path(@order.checkout_steps.first)
-          else
-            redirect_to cart_path
-          end
-        end
-      end
-    else
-      respond_with(@order)
-    end
+  durably_decorate :after_update_attributes, mode: 'soft', sha: 'bdc8fc02ee53912eda684bdd37a6266594665866' do
+    apply_gift_code
+    original_after_update_attributes
   end
 
 end

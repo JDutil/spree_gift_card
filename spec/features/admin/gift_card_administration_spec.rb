@@ -53,7 +53,7 @@ feature "Admin Gift Card Administration", js: true do
     visit spree.admin_gift_cards_path
     within 'table.index' do
       page.should have_content('First Last')
-      click_link 'Delete'
+      find('[data-action="remove"]').click
       page.driver.browser.switch_to.alert.accept
     end
     sleep 1
@@ -63,7 +63,7 @@ feature "Admin Gift Card Administration", js: true do
   scenario 'updating gift card' do
     create :gift_card, name: 'Testing'
     visit spree.admin_gift_cards_path
-    click_link 'Edit'
+    find('[data-action="edit"]').click
     fill_in 'gift_card[email]', with: 'spree@example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'

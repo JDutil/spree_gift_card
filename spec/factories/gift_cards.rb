@@ -3,5 +3,6 @@ FactoryGirl.define do
     email 'spree@example.com'
     name 'Example User'
     variant
+    line_item
   end
 end
