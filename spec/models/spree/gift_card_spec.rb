@@ -20,18 +20,6 @@ describe Spree::GiftCard do
     card.original_value.should_not be_nil
   end
 
-  it 'should only have certain attributes be accessible' do
-    subject.class.accessible_attributes.to_a.should eql([
-      '', # WTF? no idea why a blank value is being added...
-      'email',
-      'name',
-      'note',
-      'variant_id',
-      'calculator_type',
-      'calculator_attributes'
-    ])
-  end
-
   context '#activatable?' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
 
