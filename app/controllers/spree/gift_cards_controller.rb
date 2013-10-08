@@ -10,7 +10,7 @@ module Spree
       begin
         # Wrap the transaction script in a transaction so it is an atomic operation
         Spree::GiftCard.transaction do
-          @gift_card = GiftCard.new(params[:gift_card])
+          @gift_card = GiftCard.new(gift_card_params)
           @gift_card.save!
           # Create line item
           line_item = LineItem.new(quantity: 1)
@@ -38,6 +38,10 @@ module Spree
     def find_gift_card_variants
       gift_card_product_ids = Product.not_deleted.where(is_gift_card: true).pluck(:id)
       @gift_card_variants = Variant.joins(:prices).where(["amount > 0 AND product_id IN (?)", gift_card_product_ids]).order("amount")
+    end
+
+    def gift_card_params
+      params.require(:gift_card).permit(:email, :name, :note, :variant_id)
     end
 
   end
