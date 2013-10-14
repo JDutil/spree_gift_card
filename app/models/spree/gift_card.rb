@@ -59,7 +59,7 @@ module Spree
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
-        self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
+        self.code = SecureRandom.hex
       end
     end
 
