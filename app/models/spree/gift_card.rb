@@ -59,7 +59,7 @@ module Spree
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
-        self.code = SecureRandom.hex
+        self.code = SecureRandom.hex(8)
       end
     end
 
