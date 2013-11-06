@@ -2,6 +2,6 @@
      original '196c020541e91ab34bec98a975e606f0305ebb2b' -->
 
 <p class='field' data-hook='gift_code'>
-  <%= form.label :gift_code %><br />
+  <%= form.label :gift_code, 'Gift Card Code' %><br />
   <%= form.text_field :gift_code, value: nil %>
 </p>
