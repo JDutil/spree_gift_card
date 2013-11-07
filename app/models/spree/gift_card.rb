@@ -50,7 +50,6 @@ module Spree
 
     def order_activatable?(order)
       order &&
-      created_at < order.created_at &&
       current_value > 0 &&
       !UNACTIVATABLE_ORDER_STATES.include?(order.state)
     end
@@ -59,7 +58,7 @@ module Spree
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
-        self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
+        self.code = SecureRandom.hex(8)
       end
     end
 
