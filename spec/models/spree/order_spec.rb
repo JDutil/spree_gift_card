@@ -4,10 +4,6 @@ describe Spree::Order do
 
   let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25, product: create(:product, is_gift_card: true))) }
 
-  it '#find_line_item_by_variant should return false if variant is gift card' do
-    subject.find_line_item_by_variant(gift_card.variant).should eql(false)
-  end
-
   context '#finalize!' do
 
     context 'when redeeming gift card' do
