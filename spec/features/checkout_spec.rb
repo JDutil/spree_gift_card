@@ -27,7 +27,7 @@ describe "Checkout", js: true do
       page.should have_content("Gift code has been successfully applied to your order.")
       within '#cart_adjustments' do
         page.should have_content("Gift Card")
-        page.should have_content("$-19.99")
+        page.should have_content("-$19.99")
       end
     end
 
@@ -107,7 +107,7 @@ describe "Checkout", js: true do
 
       within '#order-charges' do
         page.should have_content("Gift Card")
-        page.should have_content("$-19.99")
+        page.should have_content("-$19.99")
       end
     end
 
