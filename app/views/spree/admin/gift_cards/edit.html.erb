@@ -20,6 +20,6 @@
 <h2><%= Spree.t(:transactions) %><h2>
 <ul>
   <% @gift_card.transactions.each do |transaction| %>
-  <li><%= link_to "#{transaction.order.number}:" , admin_order_path(transaction.order) %> <%= number_to_currency transaction.amount %></li>
+  <li><%= link_to "#{transaction.order.number}:" , edit_admin_order_path(transaction.order) %> <%= number_to_currency transaction.amount %></li>
   <% end %>
 </ul>
