@@ -20,18 +20,6 @@ describe Spree::Order do
       end
     end
 
-    context 'when purchasing gift card' do
-      it 'sends emails' do
-        order = create(:order_with_totals)
-        order.line_items = [create(:line_item, gift_card: gift_card, order: order, price: 25, variant: gift_card.variant)]
-        order.reload # reload so line item is associated
-        order.update!
-        Spree::OrderMailer.stub_chain(:gift_card_email, :deliver).and_return(true)
-        Spree::OrderMailer.should_receive(:gift_card_email).with(gift_card.id, order).once
-        order.finalize!
-      end
-    end
-
     context "with other credits" do
       it "does not let the order total fall below zero" do
         order = create(:order_with_totals)
