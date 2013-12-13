@@ -13,10 +13,6 @@ Spree::Order.class_eval do
   # Called after transition to complete state when payments will have been processed.
   def finalize_with_gift_card!
     finalize_without_gift_card!
-    # Send out emails for any newly purchased gift cards.
-    self.line_items.each do |li|
-      Spree::OrderMailer.gift_card_email(li.gift_card, self).deliver if li.gift_card
-    end
     # Record any gift card redemptions.
     self.adjustments.where(originator_type: 'Spree::GiftCard').each do |adjustment|
       adjustment.originator.debit(adjustment.amount, self)
