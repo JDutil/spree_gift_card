@@ -1,6 +1,8 @@
 SpreeGiftCard [![Build Status](https://secure.travis-ci.org/jdutil/spree_gift_card.png)](http://travis-ci.org/jdutil/spree_gift_card) [![Dependency Status](https://gemnasium.com/jdutil/spree_gift_card.png?travis)](https://gemnasium.com/jdutil/spree_gift_card)
 =============
 
+**Please note that upcoming Spree 2.2.x may be end of life for this extension unless a community member would like to take over maintaining it (message me or open an issue if you would like to).  Rather than refactoring extension to make use of the adjustment refactoring in Spree 2.2.x there is likely going to be a complete rewrite handling Gift Cards as a payment method instead of adjustment.**
+
 This extension adds gift card functionality to spree.  It is based off the original [spree_gift_cards](http://github.com/spree/spree_gift_cards)
 extension, but differs in that it does not require a user to have an account.  Gift cards may be redeemed by
 entering a unique gift card code during checkout rather than applying store credits to the customers account.
