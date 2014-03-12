@@ -26,7 +26,15 @@ module Spree
       # Nothing to do if the gift card is already associated with the order
       return if order.gift_credit_exists?(self)
       order.update!
-      create_adjustment(Spree.t(:gift_card), order, order, true)
+      Spree::Adjustment.create!(
+            amount: compute_amount(order),
+            order: order,
+            adjustable: order,
+            source: self,
+            mandatory: true,
+            label: "#{Spree.t(:gift_card)}"
+          )
+
       order.update!
     end
 

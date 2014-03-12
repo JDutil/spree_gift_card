@@ -50,7 +50,7 @@ describe Spree::GiftCard do
       order.reload # reload so line item is associated
       order.update!
       gift_card.apply(order)
-      order.adjustments.find_by_originator_id_and_originator_type(gift_card.id, gift_card.class.to_s).mandatory.should be_true
+      order.adjustments.find_by_source_id_and_source_type(gift_card.id, gift_card.class.to_s).mandatory.should be_true
     end
 
     context 'for order total larger than gift card amount' do
@@ -60,7 +60,7 @@ describe Spree::GiftCard do
         order.reload # reload so line item is associated
         order.update!
         gift_card.apply(order)
-        order.adjustments.find_by_originator_id_and_originator_type(gift_card.id, gift_card.class.to_s).amount.to_f.should eql(-25.0)
+        order.adjustments.find_by_source_id_and_source_type(gift_card.id, gift_card.class.to_s).amount.to_f.should eql(-25.0)
       end
     end
 
@@ -71,7 +71,7 @@ describe Spree::GiftCard do
         order.update! # update so order calculates totals
         gift_card.apply(order)
         # default line item is priced at 10
-        order.adjustments.find_by_originator_id_and_originator_type(gift_card.id, gift_card.class.to_s).amount.to_f.should eql(-10.0)
+        order.adjustments.find_by_source_id_and_source_type(gift_card.id, gift_card.class.to_s).amount.to_f.should eql(-10.0)
       end
     end
   end
