@@ -18,7 +18,7 @@ module Spree
           line_item.variant = @gift_card.variant
           line_item.price = @gift_card.variant.price
           # Add to order
-          order = current_order(true)
+          order = current_order(create_order_if_necessary: true)
           order.line_items << line_item
           line_item.order=order
           order.save!
