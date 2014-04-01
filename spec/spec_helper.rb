@@ -1,13 +1,15 @@
 # Setup simplecov first to make sure coverage happens through everything.
 require 'simplecov'
-SimpleCov.start do
-  add_filter '/config/'
-  add_group 'Controllers', 'app/controllers'
-  add_group 'Helpers', 'app/helpers'
-  add_group 'Mailers', 'app/mailers'
-  add_group 'Models', 'app/models'
-  add_group 'Libraries', 'lib'
-  add_group 'Specs', 'spec'
+if ENV['COVERAGE']
+  SimpleCov.start do
+    add_filter '/config/'
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Helpers', 'app/helpers'
+    add_group 'Mailers', 'app/mailers'
+    add_group 'Models', 'app/models'
+    add_group 'Libraries', 'lib'
+    add_group 'Specs', 'spec'
+  end
 end
 
 # Configure Rails Environment
