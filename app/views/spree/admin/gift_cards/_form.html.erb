@@ -6,11 +6,18 @@
       <%= f.error_message_on :email %>
     <% end %>
   </div>
-  <div class="omega five columns">
+  <div class="alpha five columns">
     <%= f.field_container :name do %>
       <%= f.label :name %> <span class="required">*</span><br/>
       <%= f.text_field :name, :class => "fullwidth" %>
       <%= f.error_message_on :name %>
+    <% end %>
+  </div>
+
+  <div class="omega two columns">
+    <%= f.field_container :restrict_user do %>
+      <%= label_tag :restrict_user, Spree.t(:restrict_user) %><br/>
+      <%= check_box_tag :restrict_user %>
     <% end %>
   </div>
 

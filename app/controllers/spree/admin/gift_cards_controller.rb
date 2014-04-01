@@ -3,8 +3,26 @@ module Spree
     class GiftCardsController < Spree::Admin::ResourceController
       before_filter :find_gift_card_variants, :except => [:destroy]
 
+      def update
+        @object.attributes = gift_card_params
+        if params[:restrict_user]
+          return unless handle_restricted_user
+        end
+
+        if @object.save
+          flash[:success] = flash_message_for(@object, :successfully_updated)
+          redirect_to admin_gift_cards_path
+        else
+          render :edit
+        end
+      end
+
       def create
         @object.attributes = gift_card_params
+        if params[:restrict_user]
+          return unless handle_restricted_user
+        end
+
         if @object.save
           flash[:success] = Spree.t(:successfully_created_gift_card)
           redirect_to admin_gift_cards_path
@@ -16,6 +34,20 @@ module Spree
       private
       def collection
         Spree::GiftCard.order("created_at desc").page(params[:page]).per(Spree::Config[:orders_per_page])
+      end
+
+      def handle_restricted_user
+        user = Spree.user_class.find_by(email: @object.email)
+
+        if user
+          @object.user_id = user.id
+          true
+        else
+          action = params[:action] == "create" ? :new : :edit
+          flash[:error] = Spree.t(:could_not_find_user)
+          render action
+          false
+        end
       end
 
       def find_gift_card_variants
