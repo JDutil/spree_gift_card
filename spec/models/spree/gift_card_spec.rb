@@ -22,22 +22,45 @@ describe Spree::GiftCard do
 
   context '#activatable?' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
+    let(:user) { create(:user) }
 
-    it 'should be activatable if created before order, has current value, and order state valid' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second))).should be_true
+    context "when the gift card has no user" do
+      it 'should be activatable if created before order, has current value, and order state valid' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second), user: user)).should be_true
+      end
+
+      it 'should not be activatable if created after order' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at - 1.second), user: user)).should be_false
+      end
+
+      it 'should not be activatable if no current value' do
+        gift_card.stub :current_value => 0
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second), user: user)).should be_false
+      end
+
+      it 'should not be activatable if invalid order state' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'complete', created_at: (gift_card.created_at + 1.second), user: user)).should be_false
+      end
     end
 
-    it 'should not be activatable if created after order' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at - 1.second))).should be_false
-    end
+    context "when the gift card has a user" do
+      let(:order) { build_stubbed(:order, user: order_user) }
+      before do
+        gift_card.update_column(:user_id, user.id)
+      end
 
-    it 'should not be activatable if no current value' do
-      gift_card.stub :current_value => 0
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second))).should be_false
-    end
+      subject { gift_card.order_activatable?(order) }
 
-    it 'should not be activatable if invalid order state' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'complete', created_at: (gift_card.created_at + 1.second))).should be_false
+      context "when the user on the order matches the user on the gift card" do
+        let(:order_user) { user }
+
+        it { should be_true }
+      end
+      context "when the user on the order does not match the user on the gift card" do
+        let(:order_user) { create(:user) }
+
+        it { should be_false }
+      end
     end
   end
 

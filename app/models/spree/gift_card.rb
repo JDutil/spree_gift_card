@@ -5,6 +5,7 @@ module Spree
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
+    belongs_to :user, class_name: Spree.user_class.to_s
     belongs_to :variant
     belongs_to :line_item
 
@@ -25,9 +26,14 @@ module Spree
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
       return if order.gift_credit_exists?(self)
-      order.update!
-      create_adjustment(Spree.t(:gift_card), order, order, true)
-      order.update!
+      if is_valid_user?(order.user)
+        order.update!
+        create_adjustment(Spree.t(:gift_card), order, order, true)
+        order.update!
+        true
+      else
+        false
+      end
     end
 
     # Calculate the amount to be used when creating an adjustment
@@ -52,7 +58,16 @@ module Spree
       order &&
       created_at < order.created_at &&
       current_value > 0 &&
-      !UNACTIVATABLE_ORDER_STATES.include?(order.state)
+      !UNACTIVATABLE_ORDER_STATES.include?(order.state) &&
+      is_valid_user?(order.user)
+    end
+
+    def is_valid_user?(user)
+      if gc_user = self.user_id
+        return user.id == gc_user
+      end
+
+      true
     end
 
     private
