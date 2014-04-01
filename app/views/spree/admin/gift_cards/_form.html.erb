@@ -2,10 +2,15 @@
   <div class="alpha five columns">
     <%= f.field_container :email do %>
       <%= f.label :email %> <span class="required">*</span><br/>
-      <%= f.text_field :email, :class => "fullwidth" %>
+      <% if email = request.params[:email] %>
+        <%= f.text_field :email, value: email, :class => "fullwidth" %>
+      <% else %>
+        <%= f.text_field :email, class: "fullwidth" %>
+      <% end %>
       <%= f.error_message_on :email %>
     <% end %>
   </div>
+
   <div class="alpha five columns">
     <%= f.field_container :name do %>
       <%= f.label :name %> <span class="required">*</span><br/>
