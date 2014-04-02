@@ -20,6 +20,14 @@ describe Spree::GiftCard do
     card.original_value.should_not be_nil
   end
 
+  it "does not set current and original values if there is no variant" do
+    card = Spree::GiftCard.create(:email => "test@mail.com", :name => "John")
+
+    card.current_value.should be_nil
+    card.original_value.should be_nil
+    card.valid?.should be_false
+  end
+
   context '#activatable?' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
     let(:user) { create(:user) }
@@ -120,4 +128,32 @@ describe Spree::GiftCard do
     end
   end
 
+  describe "#price" do
+    let!(:li) { create(:line_item, price: 5, quantity: 5) }
+    let!(:variant) { create(:variant) }
+
+    let(:gc1) { create(:gift_card, line_item: li) }
+    let(:gc2) { create(:gift_card, line_item: nil, variant: variant) }
+    let(:gc3) { create(:gift_card, line_item: nil, variant: nil, original_value: 8, current_value: 8) }
+
+    subject { gift_card.price }
+
+    context "when the gift card has a line_item" do
+      let(:gift_card) { gc1 }
+
+      it { should eql(li.price * li.quantity) }
+    end
+
+    context "when the gift card has no line_item but has a variant" do
+      let(:gift_card) { gc2 }
+
+      it { should eql(variant.price) }
+    end
+
+    context "when the gift card has no line_item or variant but has a current_value" do
+      let(:gift_card) { gc3 }
+
+      it { should eql(gc3.current_value) }
+    end
+  end
 end

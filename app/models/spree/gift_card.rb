@@ -51,7 +51,13 @@ module Spree
     end
 
     def price
-      self.line_item ? self.line_item.price * self.line_item.quantity : self.variant.price
+      if self.line_item
+        return self.line_item.price * self.line_item.quantity
+      elsif self.variant
+        return self.variant.price
+      else
+        return self.current_value
+      end
     end
 
     def order_activatable?(order)
@@ -62,6 +68,8 @@ module Spree
       is_valid_user?(order.user)
     end
 
+    private
+
     def is_valid_user?(user)
       if gc_user = self.user_id
         return user.id == gc_user
@@ -69,8 +77,6 @@ module Spree
 
       true
     end
-
-    private
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
@@ -83,8 +89,10 @@ module Spree
     end
 
     def set_values
-      self.current_value  = self.variant.try(:price)
-      self.original_value = self.variant.try(:price)
+      if self.variant
+        self.current_value  = self.variant.try(:price)
+        self.original_value = self.variant.try(:price)
+      end
     end
 
   end
