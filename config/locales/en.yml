@@ -1,5 +1,12 @@
 en:
+  gift_card_issued_subject: "You've been issued a gift card"
+
   spree:
+    gift_card_mailer:
+      gift_card_issued:
+        issued: "You've been issued a gift card!"
+        current: Current Value
+        code: Redemption Code
     apply: "Apply"
     back_to_gift_cards_list: "Back to Gift Cards List"
     buy_gift_card: "Buy gift card"
