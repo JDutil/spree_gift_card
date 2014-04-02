@@ -26,6 +26,7 @@ module Spree
         end
 
         if @object.save
+          Spree::GiftCardMailer.gift_card_issued(@object).deliver
           flash[:success] = Spree.t(:successfully_created_gift_card)
           redirect_to admin_gift_cards_path
         else

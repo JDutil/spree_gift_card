@@ -24,6 +24,13 @@ describe Spree::Admin::GiftCardsController do
           subject
           expect(Spree::GiftCard.last.user).to eql(user)
         end
+
+        it "should deliver an email" do
+          mailer = double
+          mailer.should_receive(:deliver)
+          expect(Spree::GiftCardMailer).to receive(:gift_card_issued).with(an_instance_of(Spree::GiftCard)).and_return(mailer)
+          subject
+        end
       end
 
       context "when the user is not found" do
