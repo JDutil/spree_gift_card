@@ -9,7 +9,30 @@
 <% end %>
 
 <% content_for :table_filter_title do %>
-  <h2>Testing</h2>
+  <h2>Search</h2>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for [:admin, @search], method: :get do |f| %>
+    <div class="gift-card-sort alpha sixteen columns">
+      <div class="label">
+        <%= Spree.t(:gift_card_sort_by) %>
+      </div>
+
+      <div class="field">
+        <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes) %>
+      </div>
+
+      <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]]) %>
+      <div class="field">
+        <%= select_tag :sort_direction, directions %>
+      </div>
+    </div>
+
+    <div class="gift-card-seach-button">
+      <%= f.button Spree.t(:search), type: "submit", class: "button" %>
+    </div>
+  <% end %>
 <% end %>
 
 <table class="index">

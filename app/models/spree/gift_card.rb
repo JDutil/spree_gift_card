@@ -23,6 +23,13 @@ module Spree
 
     include Spree::Core::CalculatedAdjustments
 
+    def self.sortable_attributes
+      [
+        ["Creation Date", "created_at"],
+        ["Expiration Date", "expiration_date"],
+      ]
+    end
+
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
       return if order.gift_credit_exists?(self)
@@ -94,6 +101,5 @@ module Spree
         self.original_value = self.variant.try(:price)
       end
     end
-
   end
 end

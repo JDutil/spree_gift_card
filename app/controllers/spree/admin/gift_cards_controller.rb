@@ -55,8 +55,11 @@ module Spree
       end
 
       private
+
       def collection
-        Spree::GiftCard.order("created_at desc").page(params[:page]).per(Spree::Config[:orders_per_page])
+        consolidate_search_parameters
+        @search = Spree::GiftCard.ransack(params[:q])
+        @search.result.page(params[:page]).per(Spree::Config[:orders_per_page])
       end
 
       def handle_restricted_user
@@ -73,13 +76,20 @@ module Spree
         end
       end
 
+      def consolidate_search_parameters
+        if params[:sort_by] && params[:sort_direction]
+          params[:q] ||= {}
+          params[:q][:s] = "#{params[:sort_by]} #{params[:sort_direction]}"
+        end
+      end
+
       def find_gift_card_variants
         gift_card_product_ids = Product.not_deleted.where(is_gift_card: true).pluck(:id)
         @gift_card_variants = Variant.joins(:prices).where(["amount > 0 AND product_id IN (?)", gift_card_product_ids]).order("amount")
       end
 
       def gift_card_params
-        params[object_name].permit(:email, :original_value, :name, :note, :value, :variant_id)
+        params[object_name].permit(:q, :email, :original_value, :name, :note, :value, :variant_id)
       end
     end
   end
