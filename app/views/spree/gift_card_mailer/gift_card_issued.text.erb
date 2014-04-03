@@ -1,5 +1,5 @@
 <%= t('.issued') %>
 
-<%= t('.current') %>: <%= @gift_card.current_value %>
+<%= t('.current') %>: <%= number_to_currency(@gift_card.current_value) %>
 <%= t('.expiration') %>: <%= @gift_card.expiration_date.to_date.to_s(:long) %>
 <%= t('.code') %>: <%= @gift_card.code %>
