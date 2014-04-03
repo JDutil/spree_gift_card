@@ -229,4 +229,68 @@ describe Spree::Admin::GiftCardsController do
       end
     end
   end
+
+  describe "PUT restore" do
+    let(:card) { create :gift_card, variant_id: nil, original_value: 55, current_value: 0 }
+
+    subject { put :restore, id: card.id, use_route: :spree }
+
+    context "when the card has a current value == 0" do
+      context "and updates successfully" do
+        describe "response" do
+          it { should be_redirect }
+
+          it "sets the success flash" do
+            subject; expect(flash[:success]).to be
+          end
+        end
+
+        describe "card" do
+          it "has its current value restored" do
+            subject; expect(card.reload.current_value).to eql(card.original_value)
+          end
+        end
+      end
+
+      context "and fails to update" do
+        before do
+          Spree::GiftCard.any_instance.stub(:update).and_return(false)
+        end
+
+        describe "response" do
+          it { should be_redirect }
+
+          it "sets the error flash" do
+            subject; expect(flash[:error]).to be
+          end
+        end
+
+        describe "card" do
+          it "retains its current value" do
+            subject; expect(card.reload.current_value).to eql(0)
+          end
+        end
+      end
+    end
+
+    context "when the card does not have a current value == 0" do
+      before do
+        card.update(current_value: 10)
+      end
+
+      describe "response" do
+        it { should be_redirect }
+
+        it "sets the error flash" do
+          subject; expect(flash[:error]).to be
+        end
+      end
+
+      describe "card" do
+        it "retains its current value" do
+          subject; expect(card.reload.current_value).to eql(10)
+        end
+      end
+    end
+  end
 end

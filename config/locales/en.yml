@@ -8,9 +8,12 @@ en:
         current: Current Value
         code: Redemption Code
         code: Redemption Code
+    gift_card_restore_confirm: "Are you sure? This will reset the value of the gift card to its' original value."
     gift_card_void_confirm: "Are you sure? This will remove all value from the gift card."
     gift_card_voided: Gift card has been successfully voided.
+    gift_card_restore: Gift card has been successfully restored.
     gift_card_void_failure: Something went wrong trying to void your gift card.
+    gift_card_restore_failure: Something went wrong trying to restore your gift card.
     void_card: Void Card
     restore_card: Restore Card
     apply: "Apply"

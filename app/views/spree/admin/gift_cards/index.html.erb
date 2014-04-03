@@ -49,6 +49,16 @@
                   data: { confirm: Spree.t(:gift_card_void_confirm) }
                 )
                 %>
+            <% else %>
+              <%=
+                link_to_with_icon(
+                  'icon-check',
+                  Spree.t(:restore_card),
+                  restore_admin_gift_card_path(card),
+                  no_text: true, method: :put,
+                  data: { confirm: Spree.t(:gift_card_restore_confirm) }
+                )
+                %>
             <% end %>
           <% end %>
         </td>
