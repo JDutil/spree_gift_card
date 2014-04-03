@@ -7,6 +7,12 @@ en:
         issued: "You've been issued a gift card!"
         current: Current Value
         code: Redemption Code
+        code: Redemption Code
+    gift_card_void_confirm: "Are you sure? This will remove all value from the gift card."
+    gift_card_voided: Gift card has been successfully voided.
+    gift_card_void_failure: Something went wrong trying to void your gift card.
+    void_card: Void Card
+    restore_card: Restore Card
     apply: "Apply"
     back_to_gift_cards_list: "Back to Gift Cards List"
     buy_gift_card: "Buy gift card"
