@@ -1,3 +1,14 @@
-.gift-card-sort > div {
-  display: inline-block;
+.sort-fields {
+  .inline {
+    display: inline-block;
+    padding-top: 0;
+  }
+
+  .field-block {
+    > label {
+      display: block;
+    }
+
+    padding: 10px 0;
+  }
 }

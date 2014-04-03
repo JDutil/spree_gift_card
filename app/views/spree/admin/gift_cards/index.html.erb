@@ -9,28 +9,43 @@
 <% end %>
 
 <% content_for :table_filter_title do %>
-  <h2>Search</h2>
+  Search
 <% end %>
 
 <% content_for :table_filter do %>
   <%= search_form_for [:admin, @search], method: :get do |f| %>
-    <div class="gift-card-sort alpha sixteen columns">
-      <div class="label">
-        <%= Spree.t(:gift_card_sort_by) %>
+    <div class="gift-card-sort">
+      <div class="sort-fields alpha seven columns">
+        <div class="field-block">
+          <label>
+            <%= Spree.t(:gift_card_sort_by).upcase %>
+          </label>
+          <div class="field inline">
+            <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes), class: "select2" %>
+          </div>
+          <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]]) %>
+          <div class="field inline">
+            <%= select_tag :sort_direction, directions, class: "select2" %>
+          </div>
+        </div>
       </div>
-
-      <div class="field">
-        <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes), class: "select2" %>
+      <div class="alpha four columns">
+        <div class="field">
+          <%= f.label :email_cont, Spree.t(:email) %>
+          <%= f.text_field :email_cont %>
+        </div>
       </div>
-
-      <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]]) %>
-      <div class="field">
-        <%= select_tag :sort_direction, directions, class: "select2" %>
+      <div class="omega five columns">
+        <div class="field">
+          <%= f.label :code_cont, Spree.t(:gift_code) %>
+          <%= f.text_field :code_cont %>
+        </div>
       </div>
     </div>
 
-    <div class="gift-card-seach-button">
-      <%= f.button Spree.t(:search), type: "submit", class: "button" %>
+    <div class="clearfix"></div>
+    <div class="actions filter-actions">
+      <%= button Spree.t(:filter_results), 'icon-search' %>
     </div>
   <% end %>
 <% end %>
