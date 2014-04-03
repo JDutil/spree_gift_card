@@ -164,4 +164,69 @@ describe Spree::Admin::GiftCardsController do
       end
     end
   end
+
+  describe "PUT void" do
+    let(:card) { create :gift_card, variant_id: nil, original_value: 55, current_value: 55 }
+
+    subject { put :void, id: card.id, use_route: :spree }
+
+    context "when the card has a current value > 0" do
+
+      context "and updates successfully" do
+        describe "response" do
+          it { should be_redirect }
+
+          it "sets the success flash" do
+            subject; expect(flash[:success]).to be
+          end
+        end
+
+        describe "card" do
+          it "has its current value eliminated" do
+            subject; expect(card.reload.current_value).to eql(0)
+          end
+        end
+      end
+
+      context "and fails to update" do
+        before do
+          allow_any_instance_of(Spree::GiftCard).to receive(:update).and_return(false)
+        end
+
+        describe "response" do
+          it { should be_redirect }
+
+          it "sets the error flash" do
+            subject; expect(flash[:error]).to be
+          end
+        end
+
+        describe "card" do
+          it "retains its current value" do
+            subject; expect(card.reload.current_value).to eql(55)
+          end
+        end
+      end
+    end
+
+    context "when the card does not have a current value > 0" do
+      before do
+        card.update(current_value: 0)
+      end
+
+      describe "response" do
+        it { should be_redirect }
+
+        it "sets the error flash" do
+          subject; expect(flash[:error]).to be
+        end
+      end
+
+      describe "card" do
+        it "retains its current value eliminated" do
+          subject; expect(card.reload.current_value).to eql(0)
+        end
+      end
+    end
+  end
 end

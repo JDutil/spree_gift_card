@@ -37,6 +37,20 @@
           <%= link_to_edit card, :no_text => true if can?(:edit, card) %>
           &nbsp;
           <%= link_to_delete card, :no_text => true if can?(:delete, card) %>
+          &nbsp;
+          <% if can?(:manage, card) %>
+            <% if card.current_value > 0 %>
+              <%=
+                link_to_with_icon(
+                  'icon-void',
+                  Spree.t(:void_card),
+                  void_admin_gift_card_path(card),
+                  no_text: true, method: :put,
+                  data: { confirm: Spree.t(:gift_card_void_confirm) }
+                )
+                %>
+            <% end %>
+          <% end %>
         </td>
       </tr>
     <% end %>
