@@ -20,12 +20,12 @@
       </div>
 
       <div class="field">
-        <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes) %>
+        <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes), class: "select2" %>
       </div>
 
       <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]]) %>
       <div class="field">
-        <%= select_tag :sort_direction, directions %>
+        <%= select_tag :sort_direction, directions, class: "select2" %>
       </div>
     </div>
 
