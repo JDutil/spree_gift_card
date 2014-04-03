@@ -1,7 +1,7 @@
 module Spree
   module Admin
     class GiftCardsController < Spree::Admin::ResourceController
-      before_filter :find_gift_card_variants, :except => [:restore, :void, :destroy]
+      before_filter :find_gift_card_variants, :except => [:destroy]
 
       def update
         @object.attributes = gift_card_params
@@ -31,26 +31,6 @@ module Spree
           redirect_to admin_gift_cards_path
         else
           render :new
-        end
-      end
-
-      def void
-        if @object.current_value > 0 && @object.update(current_value: 0)
-          flash[:success] = Spree.t(:gift_card_voided)
-          redirect_to admin_gift_cards_path
-        else
-          flash[:error] = Spree.t(:gift_card_void_failure)
-          redirect_to admin_gift_cards_path
-        end
-      end
-
-      def restore
-        if @object.current_value == 0 && @object.update(current_value: @object.original_value)
-          flash[:success] = Spree.t(:gift_card_restored)
-          redirect_to admin_gift_cards_path
-        else
-          flash[:error] = Spree.t(:gift_card_restore_failure)
-          redirect_to admin_gift_cards_path
         end
       end
 
