@@ -21,6 +21,8 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
+    scope :active, -> () { where('expiration_date > ?', Time.now) }
+
     include Spree::Core::CalculatedAdjustments
 
     def self.sortable_attributes
