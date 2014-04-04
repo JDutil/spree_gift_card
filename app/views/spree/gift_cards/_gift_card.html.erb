@@ -1,0 +1,8 @@
+<tr>
+  <td><%= gift_card.code %></td>
+  <td><%= number_to_currency gift_card.original_value %></td>
+  <td><%= number_to_currency gift_card.current_value %></td>
+  <td><%= gift_card.note %></td>
+  <td><%= gift_card.expiration_date.to_date.to_s(:long) %></td>
+  <td><%= gift_card.created_at.to_date.to_s(:long) %></td>
+</tr>

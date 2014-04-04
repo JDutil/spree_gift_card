@@ -1,6 +1,7 @@
 en:
   gift_card_issued_subject: "You've been issued a gift card"
   spree:
+    gift_cards_show_all: "Show all Gift Certificates"
     gift_card_mailer:
       gift_card_issued:
         issued: "You've been issued a gift card!"
