@@ -1,6 +1,7 @@
 en:
   gift_card_issued_subject: "You've been issued a gift card"
   spree:
+    view_my_gift_certificates: "View my gift certificates"
     show_all_gc: "Show all gift certificates"
     hide_expired: "Hide expired gift certificates"
     expiration_date: "Expiration Date"
