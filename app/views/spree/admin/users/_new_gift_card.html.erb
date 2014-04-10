@@ -1,5 +1,0 @@
-<%= form_tag spree.new_admin_gift_card_path, method: :get do %>
-  <%= hidden_field_tag :email, @user.email %>
-  <%= button_tag Spree.t(:create_new_gift_card), type: "submit", class: "button" %>
-<% end %>
-
