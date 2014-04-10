@@ -1,16 +1,20 @@
-<table class="index">
-  <thead>
-    <tr>
+<div class="show-all-link">
+  <%= link_to_if @show_all, Spree.t(:hide_expired), account_gift_cards_path do
+    link_to Spree.t(:show_all_gc), account_gift_cards_path(show_all: true)
+  end %>
+</div>
+<table class="gc-table">
+  <thead class="gc-table-head">
+    <tr class="gc-table-row">
       <th><%= Spree.t(:code) %></th>
-      <th><%= Spree.t(:original_value) %></th>
       <th><%= Spree.t(:current_value) %></th>
-      <th><%= Spree.t(:note) %></th>
       <th><%= Spree.t(:expiration_date) %></th>
-      <th><%= Spree.t(:created_at) %></th>
+      <th><%= Spree.t(:issue_date) %></th>
       <th><%= Spree.t(:status) %></th>
+      <th><%= Spree.t(:note) %></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="gc-table-body">
     <%= render @gift_cards %>
   </tbody>
 </table>

@@ -13,15 +13,15 @@ describe Spree::UsersController do
     it { should render_template(:gift_cards) }
     it { should be_success }
 
-    context "when show_all query param is absent" do
-      it "does not include expired gift cards" do
+    context "when show_all query param isn't true" do
+      it "doesn't include expired gift cards" do
         subject
         expect(assigns(:gift_cards).count).to eq 1
         expect(assigns(:gift_cards)).to_not include(expired_gc)
       end
     end
 
-    context "when show_all query param is passed in" do
+    context "when show_all query param is true" do
       subject { get :gift_cards, show_all: "true",
                 use_route: :spree }
 
