@@ -1,11 +1,8 @@
-<% state = gift_card.expired?? Spree.t(:expired) : Spree.t(:active) %>
-<% state_css = gift_card.expired?? :expired : :active %>
-
-<tr class="gc-table-row">
+<%= content_tag :tr, class: ['gc-table-row', "state-#{gift_card.status}"] do %>
   <td class="code"><%= gift_card.code %></td>
   <td class="current-value"><%= number_to_currency gift_card.current_value %></td>
   <td class="expiration-date"><%= gift_card.expiration_date.to_date.to_s(:long) %></td>
   <td class="issue-date"><%= gift_card.created_at.to_date.to_s(:long) %></td>
-  <%= content_tag :td, state, class: "state state-#{state_css}" %>
+  <%= content_tag :td, Spree.t(gift_card.status), class: "state state-#{gift_card.status}" %>
   <td class="note"><%= gift_card.note %></td>
-</tr>
+<% end %>

@@ -3,7 +3,7 @@ en:
   spree:
     view_my_gift_certificates: "View my gift certificates"
     show_all_gc: "Show all gift certificates"
-    hide_expired: "Hide expired gift certificates"
+    hide_inactive: "Hide inactive gift certificates"
     expiration_date: "Expiration Date"
     issue_date: "Issue date"
     gift_cards_show_all: "Show all Gift Certificates"

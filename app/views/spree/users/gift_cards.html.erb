@@ -1,5 +1,5 @@
 <div class="show-all-link">
-  <%= link_to_if @show_all, Spree.t(:hide_expired), account_gift_cards_path do
+  <%= link_to_if @show_all, Spree.t(:hide_inactive), account_gift_cards_path do
     link_to Spree.t(:show_all_gc), account_gift_cards_path(show_all: true)
   end %>
 </div>
