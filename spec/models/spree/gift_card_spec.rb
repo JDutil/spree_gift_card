@@ -176,4 +176,21 @@ describe Spree::GiftCard do
     it { should_not include redeemed_gc }
     it { should_not include expired_gc }
   end
+
+  describe ".status" do
+    subject { gift_card.status }
+    let(:gift_card) { create :gift_card }
+
+    it { should eq :active }
+
+    context "when it's balance is zero" do
+      before { gift_card.current_value = 0.0 }
+      it { should eq :redeemed }
+    end
+
+    context "when it's past the expiration date" do
+      before { gift_card.expiration_date = Time.current - 1.day }
+      it { should eq :expired }
+    end
+  end
 end
