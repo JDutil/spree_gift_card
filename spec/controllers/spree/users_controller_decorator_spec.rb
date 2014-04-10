@@ -13,6 +13,19 @@ describe Spree::UsersController do
     it { should render_template(:gift_cards) }
     it { should be_success }
 
+    describe "sorting" do
+      let(:gift_card_2) { create :gift_card, expiration_date: Time.current + 1.year }
+      let(:redeemed_gc) { create :redeemed_gc }
+
+      it "sorts gift_cards by status, and then expiration_date" do
+        subject
+        expect(assigns(:gift_cards).first).to eq gift_card_2
+        expect(assigns(:gift_cards)[1]).to eq gift_card
+        expect(assigns(:gift_cards)[-2]).to eq redeemed_gc
+        expect(assigns(:gift_cards).last).to eq expired_gc
+      end
+    end
+
     context "when show_all query param isn't true" do
       it "doesn't include expired gift cards" do
         subject
