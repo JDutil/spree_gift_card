@@ -21,7 +21,7 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
-    scope :active, -> () { where('expiration_date > ?', Time.now) }
+    scope :active, -> () { where('current_value != 0.0 AND expiration_date > ?', Time.now) }
 
     include Spree::Core::CalculatedAdjustments
 

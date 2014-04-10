@@ -164,4 +164,16 @@ describe Spree::GiftCard do
       it { should eql(gc3.current_value) }
     end
   end
+
+  describe "#active" do
+    subject { Spree::GiftCard.active }
+
+    let!(:expired_gc) { create :expired_gc }
+    let!(:redeemed_gc) { create :redeemed_gc }
+    let!(:gift_card) { create :gift_card }
+
+    it { should include gift_card }
+    it { should_not include redeemed_gc }
+    it { should_not include expired_gc }
+  end
 end
