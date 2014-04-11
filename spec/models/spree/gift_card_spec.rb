@@ -31,9 +31,13 @@ describe Spree::GiftCard do
   context ".sortable_attributes" do
     subject { described_class.sortable_attributes }
 
-    it { should have(2).items }
+    it { should have(6).items }
     it { should include(["Creation Date", "created_at"]) }
     it { should include(["Expiration Date", "expiration_date"]) }
+    it { should include(["Redemption Code", "code"]) }
+    it { should include(["Current Balance", "current_value"]) }
+    it { should include(["Original Balance", "original_value"]) }
+    it { should include(["Note", "note"]) }
   end
 
   context '#activatable?' do
