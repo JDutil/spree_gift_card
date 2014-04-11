@@ -14,11 +14,14 @@ describe Spree::UsersController do
     it { should be_success }
 
     describe "sorting" do
-      let(:gift_card_2) { create :gift_card, expiration_date: Time.current + 1.year }
-      let(:redeemed_gc) { create :redeemed_gc }
+      subject { get :gift_cards, use_route: :spree, show_all: "true" }
+
+      let!(:gift_card_2) { create :gift_card, user: user, expiration_date: Time.current + 1.year }
+      let!(:redeemed_gc) { create :redeemed_gc, user: user }
 
       it "sorts gift_cards by status, and then expiration_date" do
         subject
+        expect(assigns(:gift_cards).count).to eq 4
         expect(assigns(:gift_cards).first).to eq gift_card_2
         expect(assigns(:gift_cards)[1]).to eq gift_card
         expect(assigns(:gift_cards)[-2]).to eq redeemed_gc
