@@ -21,9 +21,9 @@
             <%= Spree.t(:gift_card_sort_by).upcase %>
           </label>
           <div class="field inline">
-            <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes), class: "select2" %>
+            <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes, params[:sort_by]), class: "select2" %>
           </div>
-          <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]]) %>
+          <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]], params[:sort_direction]) %>
           <div class="field inline">
             <%= select_tag :sort_direction, directions, class: "select2" %>
           </div>
@@ -32,13 +32,13 @@
       <div class="alpha four columns">
         <div class="field">
           <%= f.label :email_cont, Spree.t(:email) %>
-          <%= f.text_field :email_cont %>
+          <%= f.text_field :email_cont, value: params[:q] ? params[:q][:email_cont] : "" %>
         </div>
       </div>
       <div class="omega five columns">
         <div class="field">
           <%= f.label :code_cont, Spree.t(:gift_code) %>
-          <%= f.text_field :code_cont %>
+          <%= f.text_field :code_cont, value: params[:q] ? params[:q][:code_cont] : "" %>
         </div>
       </div>
     </div>
