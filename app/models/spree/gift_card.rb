@@ -5,6 +5,7 @@ module Spree
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
+    belongs_to :user, class_name: Spree.user_class.to_s
     belongs_to :variant
     belongs_to :line_item
 
@@ -20,14 +21,31 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
+    scope :active, -> () { where('current_value != 0.0 ', Time.now) }
+
     include Spree::Core::CalculatedAdjustments
+
+    def self.sortable_attributes
+      [
+        ["Creation Date", "created_at"],
+        ["Redemption Code", "code"],
+        ["Current Balance", "current_value"],
+        ["Original Balance", "original_value"],
+        ["Note", "note"]
+      ]
+    end
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
       return if order.gift_credit_exists?(self)
-      order.update!
-      create_adjustment(Spree.t(:gift_card), order, order, true)
-      order.update!
+      if is_valid_user?(order.user)
+        order.update!
+        create_adjustment(Spree.t(:gift_card), order, order, true)
+        order.update!
+        true
+      else
+        false
+      end
     end
 
     # Calculate the amount to be used when creating an adjustment
@@ -45,17 +63,40 @@ module Spree
     end
 
     def price
-      self.line_item ? self.line_item.price * self.line_item.quantity : self.variant.price
+      if self.line_item
+        return self.line_item.price * self.line_item.quantity
+      elsif self.variant
+        return self.variant.price
+      else
+        return self.current_value
+      end
     end
 
     def order_activatable?(order)
       order &&
       created_at < order.created_at &&
       current_value > 0 &&
-      !UNACTIVATABLE_ORDER_STATES.include?(order.state)
+      !UNACTIVATABLE_ORDER_STATES.include?(order.state) &&
+      is_valid_user?(order.user)
+    end
+
+    def status
+      if self.current_value <= 0
+        :redeemed
+      else
+        :active
+      end
     end
 
     private
+
+    def is_valid_user?(user)
+      if gc_user = self.user_id
+        return user.id == gc_user
+      end
+
+      true
+    end
 
     def generate_code
       until self.code.present? && self.class.where(code: self.code).count == 0
@@ -68,9 +109,10 @@ module Spree
     end
 
     def set_values
-      self.current_value  = self.variant.try(:price)
-      self.original_value = self.variant.try(:price)
+      if self.variant
+        self.current_value  = self.variant.try(:price)
+        self.original_value = self.variant.try(:price)
+      end
     end
-
   end
 end

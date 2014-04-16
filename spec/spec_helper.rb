@@ -1,13 +1,15 @@
 # Setup simplecov first to make sure coverage happens through everything.
 require 'simplecov'
-SimpleCov.start do
-  add_filter '/config/'
-  add_group 'Controllers', 'app/controllers'
-  add_group 'Helpers', 'app/helpers'
-  add_group 'Mailers', 'app/mailers'
-  add_group 'Models', 'app/models'
-  add_group 'Libraries', 'lib'
-  add_group 'Specs', 'spec'
+if ENV['COVERAGE']
+  SimpleCov.start do
+    add_filter '/config/'
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Helpers', 'app/helpers'
+    add_group 'Mailers', 'app/mailers'
+    add_group 'Models', 'app/models'
+    add_group 'Libraries', 'lib'
+    add_group 'Specs', 'spec'
+  end
 end
 
 # Configure Rails Environment
@@ -30,6 +32,8 @@ require 'spree/testing_support/factories'
 require 'spree/testing_support/authorization_helpers'
 require 'spree/testing_support/capybara_ext'
 require 'spree/testing_support/url_helpers'
+
+require 'pry'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods

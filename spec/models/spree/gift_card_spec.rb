@@ -20,24 +20,66 @@ describe Spree::GiftCard do
     card.original_value.should_not be_nil
   end
 
+  it "does not set current and original values if there is no variant" do
+    card = Spree::GiftCard.create(:email => "test@mail.com", :name => "John")
+
+    card.current_value.should be_nil
+    card.original_value.should be_nil
+    card.valid?.should be_false
+  end
+
+  context ".sortable_attributes" do
+    subject { described_class.sortable_attributes }
+
+    it { should have(5).items }
+    it { should include(["Creation Date", "created_at"]) }
+    it { should include(["Redemption Code", "code"]) }
+    it { should include(["Current Balance", "current_value"]) }
+    it { should include(["Original Balance", "original_value"]) }
+    it { should include(["Note", "note"]) }
+  end
+
   context '#activatable?' do
     let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
+    let(:user) { create(:user) }
 
-    it 'should be activatable if created before order, has current value, and order state valid' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second))).should be_true
+    context "when the gift card has no user" do
+      it 'should be activatable if created before order, has current value, and order state valid' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second), user: user)).should be_true
+      end
+
+      it 'should not be activatable if created after order' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at - 1.second), user: user)).should be_false
+      end
+
+      it 'should not be activatable if no current value' do
+        gift_card.stub :current_value => 0
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second), user: user)).should be_false
+      end
+
+      it 'should not be activatable if invalid order state' do
+        gift_card.order_activatable?(mock_model(Spree::Order, state: 'complete', created_at: (gift_card.created_at + 1.second), user: user)).should be_false
+      end
     end
 
-    it 'should not be activatable if created after order' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at - 1.second))).should be_false
-    end
+    context "when the gift card has a user" do
+      let(:order) { build_stubbed(:order, user: order_user) }
+      before do
+        gift_card.update_column(:user_id, user.id)
+      end
 
-    it 'should not be activatable if no current value' do
-      gift_card.stub :current_value => 0
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'cart', created_at: (gift_card.created_at + 1.second))).should be_false
-    end
+      subject { gift_card.order_activatable?(order) }
 
-    it 'should not be activatable if invalid order state' do
-      gift_card.order_activatable?(mock_model(Spree::Order, state: 'complete', created_at: (gift_card.created_at + 1.second))).should be_false
+      context "when the user on the order matches the user on the gift card" do
+        let(:order_user) { user }
+
+        it { should be_true }
+      end
+      context "when the user on the order does not match the user on the gift card" do
+        let(:order_user) { create(:user) }
+
+        it { should be_false }
+      end
     end
   end
 
@@ -97,4 +139,52 @@ describe Spree::GiftCard do
     end
   end
 
+  describe "#price" do
+    let!(:li) { create(:line_item, price: 5, quantity: 5) }
+    let!(:variant) { create(:variant) }
+
+    let(:gc1) { create(:gift_card, line_item: li) }
+    let(:gc2) { create(:gift_card, line_item: nil, variant: variant) }
+    let(:gc3) { create(:gift_card, line_item: nil, variant: nil, original_value: 8, current_value: 8) }
+
+    subject { gift_card.price }
+
+    context "when the gift card has a line_item" do
+      let(:gift_card) { gc1 }
+
+      it { should eql(li.price * li.quantity) }
+    end
+
+    context "when the gift card has no line_item but has a variant" do
+      let(:gift_card) { gc2 }
+
+      it { should eql(variant.price) }
+    end
+
+    context "when the gift card has no line_item or variant but has a current_value" do
+      let(:gift_card) { gc3 }
+
+      it { should eql(gc3.current_value) }
+    end
+  end
+
+  describe "#active" do
+    subject { Spree::GiftCard.active }
+
+    let!(:gift_card) { create :gift_card }
+
+    it { should include gift_card }
+  end
+
+  describe ".status" do
+    subject { gift_card.status }
+    let(:gift_card) { create :gift_card }
+
+    it { should eq :active }
+
+    context "when it's balance is zero" do
+      before { gift_card.current_value = 0.0 }
+      it { should eq :redeemed }
+    end
+  end
 end

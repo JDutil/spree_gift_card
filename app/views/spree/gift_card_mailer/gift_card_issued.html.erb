@@ -1,0 +1,5 @@
+<p><%= t('.issued') %></p>
+<p>
+  <%= t('.current') %>: <%= number_to_currency(@gift_card.current_value) %><br/>
+  <%= t('.code') %>: <%= @gift_card.code %>
+</p>

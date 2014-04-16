@@ -9,7 +9,45 @@
 <% end %>
 
 <% content_for :table_filter_title do %>
-  <h2>Testing</h2>
+  Search
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= search_form_for [:admin, @search], method: :get do |f| %>
+    <div class="gift-card-sort">
+      <div class="sort-fields alpha seven columns">
+        <div class="field-block">
+          <label>
+            <%= Spree.t(:gift_card_sort_by).upcase %>
+          </label>
+          <div class="field inline">
+            <%= select_tag :sort_by, options_for_select(Spree::GiftCard.sortable_attributes, params[:sort_by]), class: "select2" %>
+          </div>
+          <% directions = options_for_select([["Ascending", "asc"], ["Descending", "desc"]], params[:sort_direction]) %>
+          <div class="field inline">
+            <%= select_tag :sort_direction, directions, class: "select2" %>
+          </div>
+        </div>
+      </div>
+      <div class="alpha four columns">
+        <div class="field">
+          <%= f.label :email_cont, Spree.t(:email) %>
+          <%= f.text_field :email_cont, value: params[:q] ? params[:q][:email_cont] : "" %>
+        </div>
+      </div>
+      <div class="omega five columns">
+        <div class="field">
+          <%= f.label :code_cont, Spree.t(:gift_code) %>
+          <%= f.text_field :code_cont, value: params[:q] ? params[:q][:code_cont] : "" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="actions filter-actions">
+      <%= button Spree.t(:filter_results), 'icon-search' %>
+    </div>
+  <% end %>
 <% end %>
 
 <table class="index">
@@ -37,6 +75,30 @@
           <%= link_to_edit card, :no_text => true if can?(:edit, card) %>
           &nbsp;
           <%= link_to_delete card, :no_text => true if can?(:delete, card) %>
+          &nbsp;
+          <% if can?(:manage, card) %>
+            <% if card.current_value > 0 %>
+              <%=
+                link_to_with_icon(
+                  'icon-void',
+                  Spree.t(:void_card),
+                  void_admin_gift_card_path(card),
+                  no_text: true, method: :put,
+                  data: { confirm: Spree.t(:gift_card_void_confirm) }
+                )
+                %>
+            <% else %>
+              <%=
+                link_to_with_icon(
+                  'icon-check',
+                  Spree.t(:restore_card),
+                  restore_admin_gift_card_path(card),
+                  no_text: true, method: :put,
+                  data: { confirm: Spree.t(:gift_card_restore_confirm) }
+                )
+                %>
+            <% end %>
+          <% end %>
         </td>
       </tr>
     <% end %>

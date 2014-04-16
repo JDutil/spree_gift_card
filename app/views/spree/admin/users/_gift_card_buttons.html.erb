@@ -1,0 +1,12 @@
+<div class="gift-card-buttons">
+  <%= form_tag spree.new_admin_gift_card_path, method: :get do %>
+    <%= hidden_field_tag :email, @user.email %>
+    <%= button_tag Spree.t(:create_new_gift_card), type: "submit", class: "button" %>
+  <% end %>
+
+  <%= form_tag spree.admin_gift_cards_path, method: :get do %>
+    <%= hidden_field_tag "q[email_cont]", @user.email %>
+    <%= button_tag Spree.t(:view_users_gift_cards), type: "submit", class: "button" %>
+  <% end %>
+</div>
+

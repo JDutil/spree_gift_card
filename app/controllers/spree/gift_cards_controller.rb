@@ -1,6 +1,5 @@
 module Spree
   class GiftCardsController < Spree::StoreController
-
     def new
       find_gift_card_variants
       @gift_card = GiftCard.new

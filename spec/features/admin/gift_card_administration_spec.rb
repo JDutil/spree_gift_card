@@ -26,7 +26,7 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'spree@example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select2 '$50.00', from: 'Value'
+    fill_in 'gift_card[original_value]', with: '$50.00'
     click_button 'Create'
     page.should have_content('You have successfully created the gift card.')
     within 'table.index' do
@@ -42,7 +42,7 @@ feature "Admin Gift Card Administration", js: true do
     fill_in 'gift_card[email]', with: 'example.com'
     fill_in 'gift_card[name]', with: 'First Last'
     fill_in 'gift_card[note]', with: 'Test message.'
-    select2 '$50.00', from: 'Value'
+    fill_in 'gift_card[original_value]', with: '$50.00'
     click_button 'Create'
     page.should have_css('.field_with_errors #gift_card_email')
     Spree::GiftCard.count.should eql(0)
