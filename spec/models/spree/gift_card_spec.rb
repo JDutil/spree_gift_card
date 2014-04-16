@@ -31,9 +31,8 @@ describe Spree::GiftCard do
   context ".sortable_attributes" do
     subject { described_class.sortable_attributes }
 
-    it { should have(6).items }
+    it { should have(5).items }
     it { should include(["Creation Date", "created_at"]) }
-    it { should include(["Expiration Date", "expiration_date"]) }
     it { should include(["Redemption Code", "code"]) }
     it { should include(["Current Balance", "current_value"]) }
     it { should include(["Original Balance", "original_value"]) }
@@ -172,13 +171,9 @@ describe Spree::GiftCard do
   describe "#active" do
     subject { Spree::GiftCard.active }
 
-    let!(:expired_gc) { create :expired_gc }
-    let!(:redeemed_gc) { create :redeemed_gc }
     let!(:gift_card) { create :gift_card }
 
     it { should include gift_card }
-    it { should_not include redeemed_gc }
-    it { should_not include expired_gc }
   end
 
   describe ".status" do
@@ -190,11 +185,6 @@ describe Spree::GiftCard do
     context "when it's balance is zero" do
       before { gift_card.current_value = 0.0 }
       it { should eq :redeemed }
-    end
-
-    context "when it's past the expiration date" do
-      before { gift_card.expiration_date = Time.current - 1.day }
-      it { should eq :expired }
     end
   end
 end

@@ -21,14 +21,13 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
-    scope :active, -> () { where('current_value != 0.0 AND expiration_date > ?', Time.now) }
+    scope :active, -> () { where('current_value != 0.0 ', Time.now) }
 
     include Spree::Core::CalculatedAdjustments
 
     def self.sortable_attributes
       [
         ["Creation Date", "created_at"],
-        ["Expiration Date", "expiration_date"],
         ["Redemption Code", "code"],
         ["Current Balance", "current_value"],
         ["Original Balance", "original_value"],
@@ -84,8 +83,6 @@ module Spree
     def status
       if self.current_value <= 0
         :redeemed
-      elsif self.expired?
-        :expired
       else
         :active
       end

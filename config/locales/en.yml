@@ -23,7 +23,7 @@ en:
     gift_card_restore_failure: Something went wrong trying to restore your gift card.
     void_card: Void Card
     restore_card: Restore Card
-        code: Redemption Code
+    code: Redemption Code
     apply: "Apply"
     back_to_gift_cards_list: "Back to Gift Cards List"
     buy_gift_card: "Buy gift card"

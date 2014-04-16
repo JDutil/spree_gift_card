@@ -10,6 +10,6 @@ describe Spree::LineItem do
 
   it { should have_one(:gift_card).dependent(:destroy) }
   it { should validate_presence_of(:gift_card) }
-  it { should validate_numericality_of(:quantity).is_less_than_or_equal_to(1) }
+  it { should validate_numericality_of(:quantity).is_equal_to(1) }
 
 end
