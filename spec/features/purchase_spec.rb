@@ -7,12 +7,12 @@ feature "Purchase Gift Card", js: true do
   let!(:shipping_method) { create(:shipping_method) }
   let!(:stock_location) { create(:stock_location) }
   let!(:mug) { create(:product, :name => "RoR Mug") }
-  let!(:payment_method) { create(:payment_method) }
+  let!(:payment_method) { create(:check_payment_method) }
   let!(:zone) { create(:zone) }
 
   before do
     ## TODO seed helper for gc
-    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0, shipping_category_id: shipping_method.shipping_categories.first.id)
+    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, slug: 'gift-card', price: 0, shipping_category_id: shipping_method.shipping_categories.first.id)
     option_type = Spree::OptionType.new(name: "is-gift-card", presentation: "Value")
     product.option_types << option_type
     [25, 50, 75, 100].each do |value|

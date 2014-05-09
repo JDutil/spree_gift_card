@@ -6,7 +6,7 @@ feature "Admin Gift Card Administration", js: true do
 
   before do
     ## TODO seed helper for gc
-    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, permalink: 'gift-card', price: 0, shipping_category_id: create(:shipping_category).id)
+    product = Spree::Product.new(available_on: Time.now, name: "Gift Card", is_gift_card: true, slug: 'gift-card', price: 0, shipping_category_id: create(:shipping_category).id)
     option_type = Spree::OptionType.new(name: "is-gift-card", presentation: "Value")
     product.option_types << option_type
     [25, 50, 75, 100].each do |value|
