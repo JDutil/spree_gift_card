@@ -20,7 +20,7 @@ module Spree
     before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
 
-    include Spree::Core::CalculatedAdjustments
+    include Spree::CalculatedAdjustments
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
