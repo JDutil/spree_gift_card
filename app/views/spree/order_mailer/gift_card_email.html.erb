@@ -1,3 +1,15 @@
 <p>Hi <%= @gift_card.name %>,</p>
-<p><%= @gift_card.note %></p>
-<p>To use your <%= number_to_currency @gift_card.price %> Gift Card enter the following Gift Code during checkout: <%= @gift_card.code %></p>
+<p>
+  It is our pleasure to send you this Gift Card.
+  Don't delete this message -- you'll need the gift card code below to enjoy discounts on items available.
+  You may want to print a copy of this message for easy reference later.
+</p>
+<table class="table table-hover">
+  <tr><td>Gift Card Amount:</td> <td> <%= number_to_currency @gift_card.price %> </td></tr>
+  <tr><td>Claim Code: </td> <td> <%= @gift_card.code %> </td></tr>
+  <tr><td>Senders Note:</td> <td> <%= @gift_card.note %> </td></tr>
+  <tr><td>Sent By:</td> <td> <%= @order.email %> </td></tr>
+</table>
+
+Best Regards
+<%= Spree::Store.current.name %>
