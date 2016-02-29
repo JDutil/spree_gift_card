@@ -2,6 +2,7 @@ require 'spree/core/validators/email'
 
 module Spree
   class GiftCard < ActiveRecord::Base
+    include CalculatedAdjustments
 
     UNACTIVATABLE_ORDER_STATES = ["complete", "awaiting_return", "returned"]
 
@@ -17,10 +18,7 @@ module Spree
     validates :original_value,     presence: true
 
     before_validation :generate_code, on: :create
-    before_validation :set_calculator, on: :create
     before_validation :set_values, on: :create
-
-    include Spree::Core::CalculatedAdjustments
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
@@ -63,6 +61,10 @@ module Spree
       !UNACTIVATABLE_ORDER_STATES.include?(order.state)
     end
 
+    def calculator
+      Spree::Calculator::GiftCardCalculator.new
+    end
+
     private
 
     def generate_code
@@ -71,9 +73,6 @@ module Spree
       end
     end
 
-    def set_calculator
-      self.calculator = Spree::Calculator::GiftCard.new
-    end
 
     def set_values
       self.current_value  = self.variant.try(:price)
