@@ -18,3 +18,5 @@ en:
     successfully_created_gift_card: 'You have successfully created the gift card.'
     transactions: "Transactions"
     value: 'Value'
+    gift_card_email:
+        subject: 'Congratulation! Gift Card Received!'
