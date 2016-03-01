@@ -6,7 +6,7 @@
       <fieldset class="form-group">
         <%= f.label :variant_id, Spree.t(:value) %>
         <span class="required">*</span><br/>
-        <%= f.select :variant_id, @gift_card_variants.map { |variant| [variant.display_price, variant.id] }, {}, class: 'form-control' %>
+        <%= f.select :variant_id, variants_values(@gift_card_variants), {}, class: 'form-control' %>
       </fieldset>
 
       <fieldset class="form-group">

@@ -5,11 +5,14 @@
   You may want to print a copy of this message for easy reference later.
 </p>
 <table class="table table-hover">
+  <% if @gift_card.variant.images.present? %>
+    <tr><td style="padding-bottom: 15px"><%= image_tag @gift_card.variant.images.first.attachment.url(:product) %></td></tr>
+  <% end%>
   <tr><td>Gift Card Amount:</td> <td> <%= number_to_currency @gift_card.price %> </td></tr>
   <tr><td>Claim Code: </td> <td> <%= @gift_card.code %> </td></tr>
   <tr><td>Senders Note:</td> <td> <%= @gift_card.note %> </td></tr>
   <tr><td>Sent By:</td> <td> <%= @order.email %> </td></tr>
 </table>
 
-Best Regards
-<%= Spree::Store.current.name %>
+<p>Best Regards </p>
+<p><%= Spree::Store.current.name %></p>
