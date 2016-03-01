@@ -4,12 +4,10 @@
   Don't delete this message -- you'll need the gift card code below to enjoy discounts on items available.
   You may want to print a copy of this message for easy reference later.
 </p>
-<% if @gift_card.variant.images.present? %>
-  <p>
-    <%= image_tag attachments['image.jpg'].url %>
-  </p><br>
-<% end%>
 <table class="table table-hover">
+  <% if @gift_card.variant.images.present? %>
+    <tr><td style="padding-bottom: 15px"><%= image_tag @gift_card.variant.images.first.attachment.url(:product) %></td></tr>
+  <% end%>
   <tr><td>Gift Card Amount:</td> <td> <%= number_to_currency @gift_card.price %> </td></tr>
   <tr><td>Claim Code: </td> <td> <%= @gift_card.code %> </td></tr>
   <tr><td>Senders Note:</td> <td> <%= @gift_card.note %> </td></tr>
