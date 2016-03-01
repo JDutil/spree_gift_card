@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe Spree::Calculator::GiftCard do
+describe Spree::Calculator::GiftCardCalculator do
 
-  let(:calculator) { Spree::Calculator::GiftCard.new }
+  let(:calculator) { Spree::Calculator::GiftCardCalculator.new }
   let(:gift_card) { create(:gift_card, variant: create(:variant, price: 25)) }
   let(:order) { mock_model Spree::Order, adjustments: [], item_total: 10, ship_total: 5, additional_tax_total: 1 }
 
   it '.description' do
-    Spree::Calculator::GiftCard.description.should eql('Gift Card Calculator')
+    Spree::Calculator::GiftCardCalculator.description.should eql('Gift Card Calculator')
   end
 
   describe '#compute' do

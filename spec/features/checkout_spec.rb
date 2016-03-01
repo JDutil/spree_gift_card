@@ -23,7 +23,7 @@ describe "Checkout", js: true do
 
     it "can enter a valid gift code" do
       fill_in "order[gift_code]", :with => "foobar"
-      click_button "Update"
+      click_button "Apply"
       page.should have_content("Gift code has been successfully applied to your order.")
       within '#cart_adjustments' do
         page.should have_content("Gift Card")
@@ -34,7 +34,7 @@ describe "Checkout", js: true do
     it "cannot enter a gift code that was created after the order" do
       Spree::GiftCard.first.update_attribute(:created_at, 1.day.from_now)
       fill_in "order[gift_code]", :with => "foobar"
-      click_button "Update"
+      click_button "Apply"
       page.should have_content("The gift code you entered doesn't exist. Please try again.")
     end
   end
