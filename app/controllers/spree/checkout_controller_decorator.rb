@@ -8,7 +8,7 @@ Spree::CheckoutController.class_eval do
         render :edit and return unless apply_gift_code
       end
 
-      @order.temporary_address = !params[:save_user_address]
+      @order.temporary_address = (params[:save_user_address]).blank?
 
       unless @order.next
         flash[:error] = @order.errors.full_messages.join("\n")
