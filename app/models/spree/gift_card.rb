@@ -30,7 +30,7 @@ module Spree
             adjustable: order,
             source: self,
             mandatory: true,
-            label: "#{Spree.t(:gift_card)}"
+            label: "#{Spree.t(:gift_card)} Discount"
           )
 
       order.update!
