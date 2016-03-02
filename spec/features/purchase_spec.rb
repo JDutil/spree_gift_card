@@ -28,6 +28,12 @@ feature "Purchase Gift Card", js: true do
     ActionMailer::Base.deliveries = []
     visit spree.root_path
     click_link "Buy gift card"
+
+    @message_delivery =  double(ActionMailer::MessageDelivery)
+    @delivery_job =  double(ActionMailer::DeliveryJob)
+    Spree::OrderMailer.stub(:confirm_email).and_return(@message_delivery)
+    @message_delivery.stub(:deliver_later).and_return(@delivery_job)
+
   end
 
   scenario 'adding to cart with invalid information should display errors' do
