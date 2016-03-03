@@ -8,8 +8,8 @@ describe Spree::LineItem do
     line_item
   end
 
-  it { should have_one(:gift_card).dependent(:destroy) }
-  it { should validate_presence_of(:gift_card) }
-  it { should validate_numericality_of(:quantity).is_less_than_or_equal_to(1) }
+  it { is_expected.to have_one(:gift_card).dependent(:destroy) }
+  it { is_expected.to validate_presence_of(:gift_card) }
+  it { is_expected.to validate_numericality_of(:quantity).is_less_than_or_equal_to(1) }
 
 end
