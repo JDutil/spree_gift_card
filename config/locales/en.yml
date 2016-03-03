@@ -5,6 +5,7 @@ en:
     buy_gift_card: "Buy gift card"
     current_value: "Current Value"
     gift_card: 'Gift Card'
+    gift_card_discount: 'Gift Card Discount'
     gift_cards: "Gift cards"
     gift_card_calculator: 'Gift Card Calculator'
     gift_code: 'Gift Code'
