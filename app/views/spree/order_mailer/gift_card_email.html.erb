@@ -10,7 +10,7 @@
   <% end%>
   <tr><td>Gift Card Amount:</td> <td> <%= number_to_currency @gift_card.price %> </td></tr>
   <tr><td>Claim Code: </td> <td> <%= @gift_card.code %> </td></tr>
-  <tr><td>Senders Note:</td> <td> <%= @gift_card.note %> </td></tr>
+  <tr><td>Senders Note:</td> <td> <p style="font-style: italic"> <%= @gift_card.note %> </p> </td></tr>
   <tr><td>Sent By:</td> <td> <%= @order.email %> </td></tr>
 </table>
 
