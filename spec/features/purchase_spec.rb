@@ -31,9 +31,8 @@ feature "Purchase Gift Card", js: true do
 
     @message_delivery =  double(ActionMailer::MessageDelivery)
     @delivery_job =  double(ActionMailer::DeliveryJob)
-    Spree::OrderMailer.stub(:confirm_email).and_return(@message_delivery)
-    @message_delivery.stub(:deliver_later).and_return(@delivery_job)
-
+    allow(Spree::OrderMailer).to receive(:confirm_email).and_return(@message_delivery)
+    allow(@message_delivery).to receive(:deliver_later).and_return(@delivery_job)
   end
 
   scenario 'adding to cart with invalid information should display errors' do

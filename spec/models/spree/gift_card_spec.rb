@@ -4,10 +4,10 @@ describe Spree::GiftCard do
 
   it { is_expected.to have_many(:transactions) }
 
-  it { is_expected.to validate_presence_of(:current_value)}
-  it { is_expected.to validate_presence_of(:email)}
-  it { is_expected.to validate_presence_of(:original_value)}
-  it { is_expected.to validate_presence_of(:name)}
+  it { is_expected.to validate_presence_of(:current_value) }
+  it { is_expected.to validate_presence_of(:email) }
+  it { is_expected.to validate_presence_of(:original_value) }
+  it { is_expected.to validate_presence_of(:name) }
 
   it "should generate code before create" do
     card = Spree::GiftCard.create(:email => "test@mail.com", :name => "John", :variant_id => create(:variant).id)
