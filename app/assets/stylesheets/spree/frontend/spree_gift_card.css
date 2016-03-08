@@ -1,3 +1,15 @@
 /*
  *= require spree/frontend
 */
+
+.cart-item-description {
+  width: 50%;
+}
+
+table.table > tbody > tr.line-item td, table.table > tbody > tr.stock-item td {
+  vertical-align: top;
+}
+
+.glyphicon-minus-sign {
+  margin-top: 5px;
+}
