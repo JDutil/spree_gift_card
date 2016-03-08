@@ -11,32 +11,7 @@ describe "Checkout", js: true do
   let!(:zone) { create(:zone) }
 
   before do
-    create(:gift_card, code: "foobar", variant: create(:variant, price: 25))
-  end
-
-  context "on the cart page" do
-    before do
-      visit spree.root_path
-      click_link "RoR Mug"
-      click_button "add-to-cart-button"
-    end
-
-    it "can enter a valid gift code" do
-      fill_in "order[gift_code]", :with => "foobar"
-      click_button "Apply"
-      expect(page).to have_content("Gift code has been successfully applied to your order.")
-      within '#cart_adjustments' do
-        expect(page).to have_content("Gift Card")
-        expect(page).to have_content("-$19.99")
-      end
-    end
-
-    it "cannot enter a gift code that was created after the order" do
-      Spree::GiftCard.first.update_attribute(:created_at, 1.day.from_now)
-      fill_in "order[gift_code]", :with => "foobar"
-      click_button "Apply"
-      expect(page).to have_content("The gift code you entered doesn't exist. Please try again.")
-    end
+    create(:gift_card, code: "foobar", variant: create(:variant, price: 5))
   end
 
   context "visitor makes checkout as guest without registration" do
@@ -68,9 +43,8 @@ describe "Checkout", js: true do
       click_button "Save and Continue"
       # To payment screen
       click_button "Save and Continue"
-
-      fill_in "Gift code", :with => "coupon_codes_rule_man"
-      click_button "Save and Continue"
+      fill_in "order_gift_code", :with => "coupon_codes_rule_man"
+      click_button "Apply"
       expect(page).to have_content("The gift code you entered doesn't exist. Please try again.")
     end
 
@@ -102,12 +76,12 @@ describe "Checkout", js: true do
       # To payment screen
       click_button "Save and Continue"
 
-      fill_in "Gift code", :with => "foobar"
+      fill_in "order_gift_code", :with => "foobar"
+      click_button "Apply"
       click_button "Save and Continue"
 
-      within '#order-charges' do
-        expect(page).to have_content("Gift Card")
-        expect(page).to have_content("-$19.99")
+      within '#line-items' do
+        page.should have_content("-$5.00")
       end
     end
 

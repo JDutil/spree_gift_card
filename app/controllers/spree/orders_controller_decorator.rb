@@ -1,7 +1,12 @@
 Spree::OrdersController.class_eval do
 
-  Spree::PermittedAttributes.checkout_attributes << :gift_code
+  before_action :assign_order_with_lock, only: [:apply_gift_card, :update]
 
-  after_filter :apply_gift_code, only: :update
+  def apply_gift_card
+    @order.gift_code = params[:order][:gift_code]
+    apply_gift_code if @order.gift_code.present?
+
+    redirect_to checkout_state_path(@order.state)
+  end
 
 end
