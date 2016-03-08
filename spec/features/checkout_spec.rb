@@ -24,10 +24,10 @@ describe "Checkout", js: true do
     it "can enter a valid gift code" do
       fill_in "order[gift_code]", :with => "foobar"
       click_button "Apply"
-      page.should have_content("Gift code has been successfully applied to your order.")
+      expect(page).to have_content("Gift code has been successfully applied to your order.")
       within '#cart_adjustments' do
-        page.should have_content("Gift Card")
-        page.should have_content("-$19.99")
+        expect(page).to have_content("Gift Card")
+        expect(page).to have_content("-$19.99")
       end
     end
 
@@ -35,7 +35,7 @@ describe "Checkout", js: true do
       Spree::GiftCard.first.update_attribute(:created_at, 1.day.from_now)
       fill_in "order[gift_code]", :with => "foobar"
       click_button "Apply"
-      page.should have_content("The gift code you entered doesn't exist. Please try again.")
+      expect(page).to have_content("The gift code you entered doesn't exist. Please try again.")
     end
   end
 
@@ -71,7 +71,7 @@ describe "Checkout", js: true do
 
       fill_in "Gift code", :with => "coupon_codes_rule_man"
       click_button "Save and Continue"
-      page.should have_content("The gift code you entered doesn't exist. Please try again.")
+      expect(page).to have_content("The gift code you entered doesn't exist. Please try again.")
     end
 
     it "displays valid gift code's adjustment" do
@@ -106,8 +106,8 @@ describe "Checkout", js: true do
       click_button "Save and Continue"
 
       within '#order-charges' do
-        page.should have_content("Gift Card")
-        page.should have_content("-$19.99")
+        expect(page).to have_content("Gift Card")
+        expect(page).to have_content("-$19.99")
       end
     end
 

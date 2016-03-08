@@ -20,8 +20,9 @@ module Spree
           # Add to order
           order = current_order(create_order_if_necessary: true)
           order.line_items << line_item
-          line_item.order=order
+          line_item.order = order
           order.update_totals
+          order.updater.update_item_count
           order.save!
           # Save gift card
           @gift_card.line_item = line_item
