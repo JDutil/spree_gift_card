@@ -12,7 +12,7 @@ Spree::CheckoutController.class_eval do
 
       unless @order.next
         flash[:error] = @order.errors.full_messages.join("\n")
-        redirect_to checkout_state_path(@order.state)
+        redirect_to checkout_state_path(@order.state) and return
       end
 
       if @order.completed?
