@@ -41,7 +41,7 @@ RSpec.configure do |config|
   # Set to false for running JS drivers.
   config.use_transactional_fixtures = false
 
-  config.before :each do
+  config.before :each do |example|
     if example.metadata[:js]
       DatabaseCleaner.strategy = :truncation
     else
@@ -64,4 +64,15 @@ RSpec.configure do |config|
     end
   end
 
+
+  # rspec-rails 3 will no longer automatically infer an example group's spec type
+  # from the file location. You can explicitly opt-in to the feature using this
+  # config option.
+  # To explicitly tag specs without using automatic inference, set the `:type`
+  # metadata manually:
+  #
+  #     describe ThingsController, :type => :controller do
+  #       # Equivalent to being in spec/controllers
+  #     end
+  config.infer_spec_type_from_file_location!
 end
