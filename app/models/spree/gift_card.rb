@@ -22,7 +22,7 @@ module Spree
 
     def apply(order)
       # Nothing to do if the gift card is already associated with the order
-      return if order.gift_credit_exists?(self)
+      return false if order.gift_credit_exists?(self)
       order.update!
       Spree::Adjustment.create!(
             amount: compute_amount(order),
@@ -72,7 +72,6 @@ module Spree
         self.code = Digest::SHA1.hexdigest([Time.now, rand].join)
       end
     end
-
 
     def set_values
       self.current_value  = self.variant.try(:price)
