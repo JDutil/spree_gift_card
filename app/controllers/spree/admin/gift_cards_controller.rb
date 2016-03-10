@@ -24,7 +24,7 @@ module Spree
       end
 
       def gift_card_params
-        params[:gift_card].permit(:email, :name, :note, :value, :variant_id)
+        params.require(:gift_card).permit(:email, :name, :note, :value, :variant_id)
       end
 
     end

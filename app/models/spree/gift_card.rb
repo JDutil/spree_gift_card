@@ -62,7 +62,7 @@ module Spree
     end
 
     def calculator
-      Spree::Calculator::GiftCardCalculator.new
+      @calculator ||= Spree::Calculator::GiftCardCalculator.new
     end
 
     private
