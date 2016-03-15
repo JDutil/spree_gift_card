@@ -1,0 +1,14 @@
+<!-- insert_after '[data-hook=order_summary]' -->
+<% if @order.payment? %>
+
+  <p class='field' data-hook='gift_code'>
+    <%= form_tag order_apply_gift_card_path(@order), method: :patch do %>
+      <div class="form-group">
+        <%= label_tag :gift_code %>
+        <%= text_field_tag 'order[gift_code]', '', class: 'form-control' %>
+      </div>
+      <%= submit_tag Spree.t(:apply), class: 'btn btn-primary' %>
+    <% end %>
+  </p>
+
+<% end %>

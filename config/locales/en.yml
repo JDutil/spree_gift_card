@@ -5,10 +5,12 @@ en:
     buy_gift_card: "Buy gift card"
     current_value: "Current Value"
     gift_card: 'Gift Card'
+    gift_card_discount: 'Gift Card Discount'
     gift_cards: "Gift cards"
     gift_card_calculator: 'Gift Card Calculator'
     gift_code: 'Gift Code'
     gift_code_applied: 'Gift code has been successfully applied to your order.'
+    gift_code_already_applied: 'Gift code has already been used.'
     gift_code_not_found: "The gift code you entered doesn't exist. Please try again."
     is_gift_card: "is gift card"
     new_gift_card: 'New Gift Card'
@@ -18,3 +20,6 @@ en:
     successfully_created_gift_card: 'You have successfully created the gift card.'
     transactions: "Transactions"
     value: 'Value'
+    store_credit: 'order adjustment'
+    gift_card_email:
+        subject: 'Congratulation! Gift Card Received!'

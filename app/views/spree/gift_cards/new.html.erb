@@ -1,24 +1,33 @@
-<h1><%= Spree.t(:gift_cards) %></h1>
-<%= render "spree/shared/error_messages", :target => @gift_card %>
-<%= form_for @gift_card do |f| %>
-  <p>
-    <%= f.label :variant_id, Spree.t(:value) %>
-    <span class="required">*</span><br/>
-    <%= f.select :variant_id, @gift_card_variants.map { |variant| [variant.display_price, variant.id] } %>
-  </p>
-  <p>
-    <%= f.label :email, Spree.t("email") %>
-    <span class="required">*</span><br/>
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :name, Spree.t("recipient_name") %>
-    <span class="required">*</span><br/>
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :note, Spree.t("note") %><br/>
-    <%= f.text_area :note, :rows => 10 %>
-  </p>
-  <%= f.submit Spree.t(:add_to_cart) %>
-<% end %>
+<fieldset>
+  <legend align="center"><%= Spree.t(:gift_cards) %> </legend>
+  <%= render "spree/shared/error_messages", :target => @gift_card %>
+  <%= form_for @gift_card do |f| %>
+    <div class="col-md-6 col-md-offset-3">
+      <fieldset class="form-group">
+        <%= f.label :variant_id, Spree.t(:value) %>
+        <span class="required">*</span><br/>
+        <%= f.select :variant_id, variants_values(@gift_card_variants), {}, class: 'form-control' %>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <%= f.label :email, Spree.t("email") %>
+        <span class="required">*</span><br/>
+        <%= f.text_field :email, :class => 'form-control' %>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <%= f.label :name, Spree.t("recipient_name") %>
+        <span class="required">*</span><br/>
+        <%= f.text_field :name, :class => 'form-control' %>
+      </fieldset>
+
+      <fieldset class="form-group">
+        <%= f.label :note, Spree.t("note") %><br/>
+        <%= f.text_area :note, rows: 6, :class => 'form-control' %>
+      </fieldset>
+
+      <%= f.submit Spree.t(:add_to_cart), :class => 'btn btn-lg btn-success btn-block' %>
+    </div>
+  <% end %>
+</fieldset>
+

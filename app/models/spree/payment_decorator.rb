@@ -1,5 +1,8 @@
 Spree::Payment.class_eval do
-  before_update :send_gift_card, :if => "state_changed? && state_was != 'completed' && state == 'completed'"
+
+  state_machine do
+    after_transition to: :complete, do: :send_gift_card
+  end
 
   def send_gift_card
     order.line_items.each do |li|

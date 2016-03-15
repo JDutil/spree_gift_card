@@ -1,5 +1,6 @@
 # Setup simplecov first to make sure coverage happens through everything.
 require 'simplecov'
+
 SimpleCov.start do
   add_filter '/config/'
   add_group 'Controllers', 'app/controllers'
@@ -53,4 +54,13 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  Shoulda::Matchers.configure do |shoulda_config|
+    shoulda_config.integrate do |with|
+      # Choose a test framework:
+      with.test_framework :rspec
+
+      # Choose one or more libraries:er
+      with.library :rails
+    end
+  end
 end

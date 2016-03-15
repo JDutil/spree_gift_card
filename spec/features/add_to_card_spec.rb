@@ -13,7 +13,11 @@ describe "Add to Cart", js: true do
   end
 
   it 'has the correct total' do
-    expect(page.find('.cart-total').text).should eq 'Total $19.99'
+    expect(page.find('.cart-total').text).to eq 'Total $19.99'
+  end
+
+  it 'contains number of items' do
+    expect(page).to have_content("(1)")
   end
 
 end

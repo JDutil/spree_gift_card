@@ -1,33 +1,32 @@
 <div data-hook="admin_gift_card_form_fields" class="row clearfix">
-  <div class="alpha five columns">
+  <div class="col-md-5">
     <%= f.field_container :email do %>
       <%= f.label :email %> <span class="required">*</span><br/>
-      <%= f.text_field :email, :class => "fullwidth" %>
+      <%= f.text_field :email, class: 'form-control' %>
       <%= f.error_message_on :email %>
     <% end %>
   </div>
-  <div class="omega five columns">
+  <div class="col-md-5">
     <%= f.field_container :name do %>
       <%= f.label :name %> <span class="required">*</span><br/>
-      <%= f.text_field :name, :class => "fullwidth" %>
+      <%= f.text_field :name, class: 'form-control' %>
       <%= f.error_message_on :name %>
     <% end %>
   </div>
 
-  <div class="clear"></div>
-
-  <div class="alpha five columns">
+  <div class="col-md-5">
     <%= f.field_container :note do %>
       <%= f.label :note %>
-      <%= f.text_field :note, :class => "fullwidth" %>
+      <%= f.text_area :note, rows: 3, class: 'form-control' %>
       <%= f.error_message_on :note %>
     <% end %>
   </div>
 
-  <div class="omega five columns">
+  <div class="col-md-5">
     <%= f.field_container :variant_id do %>
       <%= f.label :variant_id, Spree.t(:value) %> <span class="required">*</span><br/>
-      <%= f.select :variant_id, @gift_card_variants.map { |v| [number_to_currency(v.price), v.id] }, {}, disabled: (f.object.present? && !f.object.new_record?), :class => 'select2' %>
+      <%= f.select :variant_id, variants_values(@gift_card_variants), {}, class: 'form-control' %>
     <% end %>
   </div>
+
 </div>

@@ -24,10 +24,15 @@ feature "Purchase Gift Card", js: true do
     end
     product.save
 
-    Spree::GiftCard.count.should eql(0)
+    expect(Spree::GiftCard.count).to eql(0)
     ActionMailer::Base.deliveries = []
     visit spree.root_path
     click_link "Buy gift card"
+
+    @message_delivery =  double(ActionMailer::MessageDelivery)
+    @delivery_job =  double(ActionMailer::DeliveryJob)
+    allow(Spree::OrderMailer).to receive(:confirm_email).and_return(@message_delivery)
+    allow(@message_delivery).to receive(:deliver_later).and_return(@delivery_job)
   end
 
   scenario 'adding to cart with invalid information should display errors' do
@@ -36,8 +41,8 @@ feature "Purchase Gift Card", js: true do
     fill_in 'gift_card[note]', with: 'Test message.'
     select '$50.00', from: 'gift_card[variant_id]'
     click_button 'Add To Cart'
-    page.should have_content('Email is invalid')
-    Spree::GiftCard.count.should eql(0)
+    expect(page).to have_content('Email is invalid')
+    expect(Spree::GiftCard.count).to eql(0)
   end
 
   scenario 'adding to cart with valid information should checkout properly' do
@@ -48,8 +53,8 @@ feature "Purchase Gift Card", js: true do
     click_button 'Add To Cart'
 
     within '#line_items' do
-      page.should have_content('Gift Card')
-      Spree::GiftCard.count.should eql(1)
+      expect(page).to have_content('Gift Card')
+      expect(Spree::GiftCard.count).to eql(1)
     end
 
     # TODO not sure why registration page is ignored so just update order here.
@@ -76,7 +81,7 @@ feature "Purchase Gift Card", js: true do
     click_button "Save and Continue"
     choose "Check"
     click_button "Save and Continue"
-    page.should have_content(Spree::Order.last.number)
+    expect(page).to have_content(Spree::Order.last.number)
   end
 
   scenario 'removing line item from cart should destroy gift card' do
@@ -85,13 +90,13 @@ feature "Purchase Gift Card", js: true do
     fill_in 'gift_card[note]', with: 'Test message.'
     select '$50.00', from: 'gift_card[variant_id]'
     click_button 'Add To Cart'
-    Spree::GiftCard.count.should eql(1)
+    expect(Spree::GiftCard.count).to eql(1)
     within '#line_items' do
-      page.should have_content('Gift Card')
+      expect(page).to have_content('Gift Card')
       find('a.delete').click
     end
-    page.should_not have_content('Gift Card')
-    Spree::GiftCard.count.should eql(0)
+    expect(page).not_to have_content('Gift Card')
+    expect(Spree::GiftCard.count).to eql(0)
   end
 
 end

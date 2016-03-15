@@ -1,3 +1,30 @@
 <p>Hi <%= @gift_card.name %>,</p>
-<p><%= @gift_card.note %></p>
-<p>To use your <%= number_to_currency @gift_card.price %> Gift Card enter the following Gift Code during checkout: <%= @gift_card.code %></p>
+<p>
+  It is our pleasure to send you this Gift Card.
+  Don't delete this message -- you'll need the gift card code below to enjoy discounts on items available.
+  You may want to print a copy of this message for easy reference later.
+</p>
+<table cellspacing="0" cellpadding="0" border="0" width="650">
+  <% if @gift_card.variant.images.present? %>
+    <tr><td colspan="2" style="padding-bottom: 15px"><%= image_tag @gift_card.variant.images.first.attachment.url(:product), style: 'width: 240px; height: auto' %></td></tr>
+  <% end%>
+  <tr>
+    <td style="width: 15%">Gift Card Amount:</td>
+    <td style="width: 85%"> <%= number_to_currency @gift_card.price %> </td>
+  </tr>
+  <tr>
+    <td style="width: 15%">Claim Code: </td>
+    <td style="width: 85%"> <%= @gift_card.code %> </td>
+  </tr>
+  <tr>
+    <td style="width: 15%">Senders Note:</td>
+    <td style="font-style: italic; width: 85%"> <%= @gift_card.note %> </td>
+  </tr>
+  <tr>
+    <td style="width: 15%">Sent By:</td>
+    <td style="width: 85%"> <%= @order.email %> </td>
+  </tr>
+</table>
+
+<p>Best Regards </p>
+<p><%= Spree::Store.current.name %></p>
