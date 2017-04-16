@@ -1,5 +1,0 @@
-<!-- insert_bottom "#sidebar, [data-hook='sidebar']"
-     enabled
-     original '2f11ce271ae3b346b9fc6a927598ad6d6d6a1885' -->
-
-<%= link_to Spree.t("buy_gift_card"), new_gift_card_path, :class => 'button' %>

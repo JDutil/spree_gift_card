@@ -1,6 +1,0 @@
-<!-- insert_bottom '[data-hook="cart_item_description"]' -->
-
-<% if line_item.gift_card %>
-  <br/><b><%= Spree.t(:for) %>:</b> <%= line_item.gift_card.name %> (<%= line_item.gift_card.email %>)
-  <br/><b><%= Spree.t(:note) %>:</b> <%= line_item.gift_card.note %>
-<% end %>
